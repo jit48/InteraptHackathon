@@ -183,7 +183,7 @@ app.get("/employees/:empId",(req,res)=>{
         if(err){
             console.log(err);
         }else{
-            console.log(foundUser);
+            // console.log(foundUser);
             res.render("employee",{foundUser});
         }
     })
@@ -194,16 +194,25 @@ app.get("/employees/:empId",(req,res)=>{
 //                                 RESOURCE ALLOCATION
 // -------------------------------------------------------------------------------------
 
-
 app.get("/createProject", function (req, res) {
-    res.render("createProject");
+    if(req.isAuthenticated()){
+        let upid=req.user._id;
+         console.log(upid);
+        res.render("createProject",{upid});
+    }
+    else {
+        res.render("pmLogin")
+    }
+   
 });
+
 app.post("/createProject", async (req, res) => {
     let arr = [];
     let team = [];
     let allotArr = [];
     let SEngrNum, MEngrNum, JEngrNum, SuxNum, MuxNum, JuxNum;
     const {
+        Oid,
         Mainframe,
         JAVA,
         ANGULAR,
@@ -274,7 +283,7 @@ app.post("/createProject", async (req, res) => {
     // const skillReq = req.body.skill;
     var id = uuid();
     const project = new Project({
-        projectId: id,
+        projectId:id,
         projectName,
         description: projectDescription,
         startDate,
@@ -284,6 +293,22 @@ app.post("/createProject", async (req, res) => {
         isCompleted:false
     });
     project.save();
+
+    User.find({_id:Oid}, (err,founduser)=>{
+        if(founduser){
+            //console.log(founduser);
+            let obj = {
+                projectId: id,
+                projectStartDate: startDate,
+                projectEndDate: endDate
+            }
+            //console.log(founduser[0].project);
+            founduser[0].project.push(obj)
+            founduser[0].save();
+        }
+     });
+
+
     let updatedUsers = [];
     User.find({skills: {$in: arr}, location: location.toUpperCase()},(err, foundUsers) => {
         if (err) {
@@ -311,7 +336,7 @@ app.post("/createProject", async (req, res) => {
                     }
                 });
                 
-                console.log(updatedUsers);
+                //console.log(updatedUsers);
                 var mainArr = [];
                 arr.forEach(Element => {
                     updatedUsers.forEach(user => {
@@ -451,14 +476,21 @@ app.post("/createProject", async (req, res) => {
                     // console.log(allotArr);
                     // console.log(mainArr);
                     
-                    res.render("ProjectEmp", {allotArr, team, arr})
+                    res.render("ProjectEmp", {allotArr, team, arr, id})
                 }
             );
 
 
         });
 
-
+app.post("/role", function(req, res){
+    var secMaven = req.body.id;
+    User.findOne({_id: secMaven}, (err, foundUser) => {
+        foundUser.projectRole = "Security Maven";
+        foundUser.save();
+    });
+});
+  
 
 /*//////////////////////////////////////////////////////////////
 REGISTER
@@ -616,7 +648,9 @@ app.post("/empLogin",(req,res)=>{
         }
         
         else{
+            //console.log(req.user)
             passport.authenticate('local',{failureRedirect: '/empLogin'})(req,res,function(){
+                //console.log(req.user);
                 if(req.user.role.toUpperCase()=="UX" || req.user.role.toUpperCase()=="ENGR" ){
                     res.redirect("/empLanding");
                 }
@@ -648,14 +682,91 @@ app.post("/empLogin",(req,res)=>{
         })
 
 
+        // app.get("/empLanding",function(req,res){ 
+        //     let name;
+        //     if(req.isAuthenticated()){
+        //         console.log(req.user);
+        //         name = req.user.username;
+        //         console.log(name);
+        //         res.render("empLanding",{passedname:name});    
+        //     }
+            
+        // })
+   // -------------------------------------------------------------------
+    //                        Employee  LANDING ROUTES
+    // -------------------------------------------------------------------
         app.get("/empLanding",function(req,res){ 
-            let name;
             if(req.isAuthenticated()){
+                var techrole,level,gen;
+                let name = req.user.fullname;
+                let username = req.user.username;
+                let role = req.user.role;
+                let rolelevel = req.user.roleLevel;
+                let projectrole = req.user.projectrole;
+                let vendor = req.user.vendor;
+                let startdate = req.user.startDate;
+                let gender = req.user.gender;
+                let skill = req.user.skills;
+                let location = req.user.location;
+                // let project = req.user.project[0];
+                let transfer=req.user.transferrable;
+                // let projectid=project.projectId;
+             
+    
+                // var projname,projdesc,projStartDate,projEndDate,projloc; 
+                
+             
+                if(role.toUpperCase()=="ENGR"){
+                    techrole="Engineer";
+                }
+                else if(role.toUpperCase()=="UX")
+                {
+                    techrole="UX Developer";
+                }
+    
+                if(rolelevel.toUpperCase()=="SENIOR")
+                {
+                    level="Senior";
+                }
+                else if(rolelevel.toUpperCase()=="JUNIOR")
+                {
+                    level="Junior";
+                }
+                else{
+                    level="Mid";
+                }
+    
+                if(gender=="M"){
+                    gen="Male"
+                }
+                else{
+                    gen="Female"
+                }
+                  
+                // Project.find({projectId:projectid},(err,foundproject)=>{
+                //     if(err){
+                //         console.log(err);
+                //     }
+                //     else{
+                //         // foundproject.forEach(item =>{
+                           
+                //               projname=foundproject[0].projectName;
+                //               projdesc=foundproject[0].description;
+                //               projStartDate=foundproject[0].startDate;
+                //               projEndDate=foundproject[0].endDate;
+                //               projloc=foundproject[0].location;
+                            
+                //         // });
+                //     }
+                // });
+
+                res.render("empLanding",{passedname:name,username,techrole,level,projectrole,vendor,startdate,gen,skill,location,transfer});
                 name = req.user.username;
                 res.render("empLanding",{passedname:name});    
             }
-            
+            else res.redirect("/empLogin");     
         })
+
         // -------------------------------------------------------------------
         //                          completeProject
         // -------------------------------------------------------------------
@@ -700,6 +811,7 @@ app.post("/empLogin",(req,res)=>{
                     }
                 })
             })
+
         // -------------------------------------------------------------------
         //                          PORT
         // -------------------------------------------------------------------
