@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Register here!</h1>
+    <form action="/empRegister" method="POST">
+    
+    <div>
+        <label>Username</label>
+        <input type="text" name="username" placeholder="Enter Name"
+        value="<% typeof firstName != 'undefined' ? firstName : '' %>"
+        required >
+    </div>
+    <div>
+        <label>Password: </label>
+        <input type="password" name="password" placeholder="Enter Password"
+        value="<% typeof email != 'undefined' ? password : '' %>"
+        >
+    </div>
+    <br>
+    <div>
+        <label>Gender</label>
+        <br>
+        <input type="radio" id="male" name="gender" value="M">
+        <label for="male">Male</label><br>
+        <input type="radio" id="female" name="gender" value="F">
+        <label for="female">Female</label><br>
+    </div>
+    <br>
+    <div>
+        <label>Location</label>
+        <input type="text" name="location" placeholder="Enter location" required>
+    </div>
+    <br>
+    <div>
+        <label>Joining Date</label>
+        <input type="date" name="startDate" placeholder="Joining Date" required>
+    </div>
+    <br>
+    <div>
+        <label>Role</label>
+        <input type="text" name="role" placeholder="Enter your current role">
+    </div>
+    <br>
+    <div>
+        <label>Role-Level</label><br>
+        <input type="radio" id="senior" name="rolelevel" value="senior">
+        <label for="male">Senior</label><br>
+        <input type="radio" id="mid" name="rolelevel" value="mid">
+        <label for="female">Mid</label><br>
+        <input type="radio" id="junior" name="rolelevel" value="junior">
+        <label for="female">Junior</label>
+        <br> 
+    </div>
+    <br>
+    <div>
+        <label>Project Role</label>
+        <br>
+        <input type="radio" id="interviewer" name="Prole" value="interviewer">
+        <label for="male">Interviewer</label><br>
+        <input type="radio" id="security" name="Prole" value="security">
+        <label for="female">Security Maven</label><br>
+        <input type="radio" id="anchor" name="Prole" value="anchor">
+        <label for="female">Anchor</label><br>
+    </div>
+    
+    <br>
+    <div>
+        <label>Vendor</label>
+        <input type="text" name="vendor" placeholder="Enter Vendor Name(if on contract)">
+    </div>
+    <br>
+    <div>
+        <label>Skills</label>
+        <br>
+        <input type="checkbox" id="cloud" name="cloud" value="cloud">
+        <label for="vehicle1"> Cloud</label><br>
+        <input type="checkbox" id="mainframe" name="mainframe" value="mainframe">
+        <label for="vehicle2">Mainframe</label><br>
+        <input type="checkbox" id="angular" name="angular" value="angular">
+        <label for="vehicle3">Angular</label><br>
+        <input type="checkbox" id="NET" name="NET" value="NET">
+        <label for="vehicle3">.NET</label><br>
+        <input type="checkbox" id="IBM" name="IBM" value="IBM">
+        <label for="vehicle3">IBM/Websphere</label><br>
+        <input type="checkbox" id="java" name="java" value="java">
+        <label for="vehicle3">JAVA</label><br>
+</div>
+    <br>
+    <div>
+        <label>Project ID</label>
+        <input type="text" name="projectId" placeholder="Enter project id">
+    </div>
+    <br>
+    <div>
+        <label>Project Start Date</label>
+        <input type="date" name="projectStartDate">
+    </div>
+    <br>
+    <div>
+        <label>Project End Date</label>
+        <input type="date" name="projectEndDate">
+    </div>
+    <br>
+    <div>
+        <label>Transferrable</label>
+        <br>
+        <input type="radio" name="transferrable" value="true">
+        <label>Yes</label>
+        <input type="radio" name="transferrable" value="false">
+        <label>No</label>
+    </div>
+    <br>
+    <button type="submit">Submit</button>
+    </form>
+</body>
+</html>
