@@ -8,16 +8,34 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="navbar">
-        <input type="text" id="find">
-        <button  name="empSearch" type="submit" id="empSearch">Search For Emp</button>
-        <button  name="projSearch" type="submit" id="projSearch">Search For Proj</button>
+    <!-- <div>
+    </div> -->
+    <div class="container">
+        <div class="empSidenav">
+            <h3>ABC Company</h3>
+            <div class="">
+                <a href="/">Dashboard</a>
+                <a href="/">Current Project</a>
+                <a href="/">Completed Projects</a>
+            </div>
+            <a class="emplogout" href="/">Logout</a>
+        </div>
+        <div class="subdiv">
+            <div class="stable">
+                <input class="input" type="text" id="find" placeholder="click on the button to search">
+                <button class="button" name="empSearch" type="submit" id="empSearch">Search For Emp</button>
+                <button class="button" name="projSearch" type="submit" id="projSearch">Search For Proj</button>
+            </div>
+            <div class="projResults" id="Results"></div>
+            <div class="projResults" id="empResults"></div>
+            <div class="projResults" id="projResults"></div>
+        </div>
+
+        <!-- <h1 id="activeProjects">Active Projects</h1>
+        <h1 id="Employees">Employees</h1> -->
+
     </div>
-    <!-- <h1 id="activeProjects">Active Projects</h1>
-    <h1 id="Employees">Employees</h1> -->
-    <div class="projResults" id="Results"></div>
-    <div class="projResults" id="empResults"></div>
-    <div class="projResults" id="projResults"></div>
+
     <script src="js/dashboard.js"></script>
 </body>
 </html>

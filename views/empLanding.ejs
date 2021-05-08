@@ -1,15 +1,45 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>
-        Others landing
-        <h1><%=passedname%></h1>
-    </h1>
-</body>
-</html>
+<%- include('partials/header') -%>
+
+
+    <div class="empLandingContainer">
+        <!-- <div class="search">
+            <input type="text" id="find">
+            <button  name="empSearch" type="submit" id="empSearch">Search For Emp</button>
+            <button  name="projSearch" type="submit" id="projSearch">Search For Proj</button>
+            <div class="projResults" id="Results"></div>
+            <div class="projResults" id="empResults"></div>
+            <div class="projResults" id="projResults"></div>
+            <script src="js/dashboard.js"></script>
+        </div> -->
+        <div class="empElements">
+            <div class="empDetails">
+                <h1><%=passedname.toUpperCase()%></h1>
+            </div>
+            <hr>
+            <div class="empBio">
+                <p><b>Location :         </b> <%=location %></p>
+                <p><b>Gender :          </b><%=gen%></p>
+                <p><b>Joining Date:          </b><%=startdate %></p>
+                <div class="empTechSkill">
+                    <p><b>Technical Skills :</b></p>
+                    <% skill.forEach(elem =>{ %>
+                    <p> <%=elem%>,</p> 
+                    <%})%>
+                </div>
+                <div class="emp-btn-group">
+                    <button class="btn btn-info" id="showProjDetails">All Projects</button>
+                    <div id="empProjDetails">
+                        <% project.forEach(project => { %>
+                            <a class="btn btn-info mt-4"href="projects/<%=project.projectId%>">Explore</a>
+                        <%})%>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
+    </div> 
+<script src="js/empLanding.js">
+
+</script>
+<%- include('partials/footer') -%>

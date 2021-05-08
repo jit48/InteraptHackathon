@@ -682,7 +682,7 @@ app.post("/empLogin",(req,res)=>{
         })
 
 
-        // app.get("/empLanding",function(req,res){ 
+        // app.get("/emLanding",function(req,res){ 
         //     let name;
         //     if(req.isAuthenticated()){
         //         console.log(req.user);
@@ -698,7 +698,7 @@ app.post("/empLogin",(req,res)=>{
         app.get("/empLanding",function(req,res){ 
             if(req.isAuthenticated()){
                 var techrole,level,gen;
-                let name = req.user.fullname;
+                let name = req.user.username;
                 let username = req.user.username;
                 let role = req.user.role;
                 let rolelevel = req.user.roleLevel;
@@ -708,8 +708,9 @@ app.post("/empLogin",(req,res)=>{
                 let gender = req.user.gender;
                 let skill = req.user.skills;
                 let location = req.user.location;
-                // let project = req.user.project[0];
+                let project = req.user.project;
                 let transfer=req.user.transferrable;
+                console.log(req.user);
                 // let projectid=project.projectId;
              
     
@@ -760,9 +761,8 @@ app.post("/empLogin",(req,res)=>{
                 //     }
                 // });
 
-                res.render("empLanding",{passedname:name,username,techrole,level,projectrole,vendor,startdate,gen,skill,location,transfer});
+                res.render("empLanding",{passedname:name,username,techrole,level,projectrole,vendor,startdate,gen,skill,location,transfer,project});
                 name = req.user.username;
-                res.render("empLanding",{passedname:name});    
             }
             else res.redirect("/empLogin");     
         })

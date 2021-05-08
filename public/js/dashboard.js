@@ -95,8 +95,8 @@ function outputHtmlProject(matches){
         const html = matches.map(match => (
             `<div class="projectCard">
                 <div class="projectDetails">
-                    <p>${match.projectName}</p>
-                    <p>${match.location}</p>
+                    <p><b>${match.projectName}</b></p>
+                    <p><b>${match.location}</b></p>
                 </div>
                 <div class="projectStartDate">
                     <p>${match.startDate}</p>
@@ -115,12 +115,13 @@ function outputHtmlProject(matches){
 async function data(){
     const res = await fetch('http://localhost:3000/projectData');
     let data = await res.json();
+    data = data.splice(0,6);
     console.log(data);
     const html = data.map(d => (
         `<div class="projectCard">
             <div class="projectDetails">
-                <p>${d.projectName}</p>
-                <p>${d.location}</p>
+                <p><b>${d.projectName}</b></p>
+                <p><b>${d.location}</b></p>
             </div>
             <div class="projectStartDate">
                 <p>${d.startDate}</p>
@@ -134,7 +135,9 @@ async function data(){
 }
 async function empData(){
     const res = await fetch('http://localhost:3000/employees');
-    const data = await res.json();
+     data = await res.json();
+        data = data.splice(0,6);
+
     console.log(data);
     const html = data.map(d => (
         `<div class="projectCard">

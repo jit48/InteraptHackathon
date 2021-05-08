@@ -1,25 +1,28 @@
 <%- include('partials/header') -%>
-
+<div class="makeFlex container">
     <div>
         <%- include('partials/pmNav') -%>
     </div>
 
-    <h1>
-        <% projects.forEach((project,i) => { %>
+   <div class="subdiv">
+    <% projects.forEach((project,i) => { %>
+        <div>
             <div>
-                <form action="/completeProject" method="post">
-                    <input type="text" name="projectId" value="<%=project.projectId%>" style="display: none;">
-                    <button type="submit">Mark Project Complete</button>
-                </form>
-                <button><a href="/projects/<%=project.projectId%>">Project <%=i%></a></button>
-            </div>
-        <%})%>
+                <a href="/createProject">Create Project</a>
+             </div>
+             <div>
+                 completed project
+             </div>
+            <form action="/completeProject" method="post">
+                <input type="text" name="projectId" value="<%=project.projectId%>" style="display: none;">
+                <button type="submit">Mark Project Complete</button>
+            </form>
+            <button><a href="/projects/<%=project.projectId%>">Project <%=i%></a></button>
+        </div>
+    <%})%>
+</div>
 
-    </h1>
-    <div>
-       <a href="/createProject">Create Project</a>
-    </div>
-    <div>
-        completed project
-    </div>
+   
+
+</div>
     <%- include('partials/footer') -%>
