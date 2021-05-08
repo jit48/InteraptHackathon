@@ -23,8 +23,28 @@ const projectSchema = new mongoose.Schema({
     totalResources:Number,
     location:String,
 })
+const userSchema = new mongoose.Schema({
+    firstName : String,
+    role: String,
+    roleLevel:String,
+    projectRole:String,
+    vendor: String,
+    startDate:String,
+    gender:String,
+    skills: Array,
+    score:Number,
+    location:String,
+    project: {
+        projectId:String,
+        projectStartDate: String,
+        projectEndDate:String
+    },
+    transferable:Boolean,
+});
 
 const Project = mongoose.model("Project", projectSchema);
+const User = mongoose.model("User", userSchema);
+
 
 const project = new Project({
      projectId:"1f6aea75-fca3-4b2f-b87b-fb71b5c8e21a",
@@ -36,7 +56,11 @@ const project = new Project({
     location:"AZ",
 })
 
-project.save();
+// project.save();
+
+
+
+
 
 app.get("/", function(req, res){
     res.render("index");
