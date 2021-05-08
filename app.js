@@ -53,11 +53,11 @@ const userSchema = new mongoose.Schema({
     skills: Array,
     score: Number,
     location: String,
-    project: [{
+    project: [{ 
         projectId: String,
         projectStartDate: String,
         projectEndDate: String
-    
+
     }],
     transferrable: Boolean
 });
@@ -188,8 +188,17 @@ app.get("/employees/:empId",(req,res)=>{
 // -------------------------------------------------------------------------------------
 
 
+
 app.get("/createProject", function (req, res) {
-    res.render("createProject");
+    if(req.isAuthenticated()){
+        let upid=req.user._id;
+         console.log(upid);
+        res.render("createProject",{upid});
+    }
+    else {
+        res.render("pmLogin")
+    }
+   
 });
 app.post("/createProject", async (req, res) => {
     let arr = [];
@@ -197,6 +206,7 @@ app.post("/createProject", async (req, res) => {
     let allotArr = [];
     let SEngrNum, MEngrNum, JEngrNum, SuxNum, MuxNum, JuxNum;
     const {
+        Oid,
         Mainframe,
         JAVA,
         ANGULAR,
@@ -276,8 +286,26 @@ app.post("/createProject", async (req, res) => {
         location
     });
     project.save();
+
+    // console.log(req.user);
+    // const Oid = req.body.id;
+     User.find({_id:Oid}, (err,founduser)=>{
+        if(founduser){
+            console.log(founduser);
+            let obj = {
+                projectId: id,
+                projectStartDate: startDate,
+                projectEndDate: endDate
+            }
+            founduser[0].project.push(obj)
+
+            founduser[0].save();
+        }
+     })
+
     let updatedUsers = [];
     User.find({skills: {$in: arr}, location: location.toUpperCase()},(err, foundUsers) => {
+
         if (err) {
             console.log(err);
         } else {                                            
@@ -475,9 +503,6 @@ app.get("/register", (req, res) => {
                 java,
                 NET,
                 IBM,
-                projectId,
-                projectStartDate,
-                projectEndDate,
                 transferrable
             } = req.body
             let arr = []
@@ -513,11 +538,6 @@ app.get("/register", (req, res) => {
                 skills: arr,
                 score: 0,
                 location: location,
-                project: {
-                    projectId: projectId,
-                    projectStartDate: projectStartDate,
-                    projectEndDate: projectEndDate
-                },
                 transferrable: transferrable
 
 
@@ -566,7 +586,7 @@ app.post("/login",(req,res)=>{
         }
         
         else{
-            console.log(req.user)
+            // console.log(req.user)
             passport.authenticate('local',{failureRedirect: '/pmLogin'})(req,res,function(){
                 console.log(req.user);
                 if(req.user.role.toUpperCase()=="PM"){
@@ -604,7 +624,7 @@ app.post("/empLogin",(req,res)=>{
         }
         
         else{
-            console.log(req.user)
+            // console.log(req.user)
             passport.authenticate('local',{failureRedirect: '/empLogin'})(req,res,function(){
                 console.log(req.user);
                 if(req.user.role.toUpperCase()=="UX" || req.user.role.toUpperCase()=="ENGR" ){
@@ -644,9 +664,10 @@ app.post("/empLogin",(req,res)=>{
         //                          PORT
         // -------------------------------------------------------------------
 
+
 app.listen(3000 , ()=>{
     console.log("server running at port 3000");
 });
 
-
 // "https://xd.adobe.com/view/26bb4dd1-2368-4f71-bf5f-4d7927e93c17-73e8/screen/dbab38c8-e61c-4720-92e2-c5536bfb53af/specs/"
+
