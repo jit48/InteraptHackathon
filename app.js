@@ -52,11 +52,12 @@ const userSchema = new mongoose.Schema({
     skills: Array,
     score: Number,
     location: String,
-    project: {
+    project: [{
         projectId: String,
         projectStartDate: String,
         projectEndDate: String
-    },
+    
+    }],
     transferrable: Boolean
 });
 
@@ -70,6 +71,32 @@ passport.deserializeUser(User.deserializeUser());
 
 const Project = mongoose.model("Project", projectSchema);
 
+
+function dateToNumber(car){
+    let str=[]
+    for(let i = 0; i<car.length ; i++){
+        if(car[i] == '-'){
+            continue;
+        }else{
+            str.push(car[i]);
+        }
+    }
+    let newStr = str.join('');
+    let newNumber =  Number(newStr);
+    return newNumber;
+}
+function numberToDate(nbr){
+    let arr = []
+   for(let i= 0; i<nbr.length ; i++){
+       if(i == 3 || i == 5){
+           arr.push(nbr[i]);
+           arr.push("-");
+       }else{
+           arr.push(nbr[i]);
+       }
+   }
+   return arr.join(''); 
+}
 //-----------------------------------------------------------------------------------
 //                                   HOME ROUTE
 //-----------------------------------------------------------------------------------
@@ -171,13 +198,21 @@ app.post("/createProject", async (req, res) => {
         location
     });
     project.save();
-    User.find({skills: {$in: arr}, location: location.toUpperCase(), "project.projectEndDate":{$lte: startDate}}, (err, foundUsers) => {
+    let updatedUsers = [];
+    User.find({skills: {$in: arr}, location: location.toUpperCase()},(err, foundUsers) => {
         if (err) {
             console.log(err);
-        } else {
+        } else {                                            
+                foundUsers.forEach(elem => {
+                    elem.project.forEach(proj => {
+                        if(dateToNumber(proj.projectEndDate) < dateToNumber(startDate)){
+                            updatedUsers.push(elem);
+                        } 
+                    })
+                });
                 var mainArr = [];
                 arr.forEach(Element => {
-                    foundUsers.forEach(user => {
+                    updatedUsers.forEach(user => {
                         if (user.skills.includes(Element)) {
                             user.score += 1;
                         }
@@ -193,10 +228,10 @@ app.post("/createProject", async (req, res) => {
                     return 0;
                   }
                   
-                  foundUsers.sort( compare );
+                  updatedUsers.sort( compare );
             }       
                 team.forEach(team => {
-                        foundUsers.forEach(user => {
+                        updatedUsers.forEach(user => {
                             if (user.role.toUpperCase() == team.toUpperCase()) {
                                 mainArr.push(user);
                             }
@@ -209,52 +244,100 @@ app.post("/createProject", async (req, res) => {
                         if(team.toUpperCase() == elem.role.toUpperCase()){
                             if(team.toUpperCase() == "ENGR"){
                                 if(elem.roleLevel == "senior" && SEngrNum!=0){
+                                    // allotArr.push(elem);
+                                    // elem.project.projectId = id;
+                                    // elem.project.projectStartDate = startDate;
+                                    // elem.project.projectEndDate = endDate;
+                                    // elem.save();
                                     allotArr.push(elem);
-                                    elem.projectId = id;
-                                    elem.projectStartDate = startDate;
-                                    elem.projectEndDate = endDate;
+                                    let obj = {
+                                        projectId: id,
+                                        projectStartDate: startDate,
+                                        projectEndDate: endDate
+                                    }
+                                    elem.project.push(obj)
                                     elem.save();
                                     SEngrNum--;
                                 }
                                 else if(elem.roleLevel == "mid" && MEngrNum!=0){
+                                    // allotArr.push(elem);
+                                    // elem.project.projectId = id;
+                                    // elem.project.projectStartDate = startDate;
+                                    // elem.project.projectEndDate = endDate;
+                                    // elem.save();
                                     allotArr.push(elem);
-                                    elem.projectId = id;
-                                    elem.projectStartDate = startDate;
-                                    elem.projectEndDate = endDate;
+                                    let obj = {
+                                        projectId: id,
+                                        projectStartDate: startDate,
+                                        projectEndDate: endDate
+                                    }
+                                    elem.project.push(obj)
                                     elem.save();
                                     MEngrNum--
                                 }
                                 else if(elem.roleLevel == "junior" && JEngrNum!=0){
                                     allotArr.push(elem);
-                                    elem.projectId = id;
-                                    elem.projectStartDate = startDate;
-                                    elem.projectEndDate = endDate;
+                                    let obj = {
+                                        projectId: id,
+                                        projectStartDate: startDate,
+                                        projectEndDate: endDate
+                                    }
+                                    elem.project.push(obj);
                                     elem.save();
+                                    // elem.project.append.projectId = id;
+                                    // elem.project.append.projectStartDate = startDate;
+                                    // elem.project.projectEndDate = endDate;
+                                    // elem.project.push(obj);
+                                    // elem.save();
                                     JEngrNum--;
                                 }
                             }
                             else if(team == "UX"){
                                 if(elem.roleLevel == "senior" && SuxNum!=0){
+                                    // allotArr.push(elem);
+                                    // elem.projectId = id;
+                                    // elem.projectStartDate = startDate;
+                                    // elem.projectEndDate = endDate;
+                                    // elem.save();
                                     allotArr.push(elem);
-                                    elem.projectId = id;
-                                    elem.projectStartDate = startDate;
-                                    elem.projectEndDate = endDate;
+                                    let obj = {
+                                        projectId: id,
+                                        projectStartDate: startDate,
+                                        projectEndDate: endDate
+                                    }
+                                    elem.project.push(obj);
                                     elem.save();
                                     SuxNum--;
                                 }
                                 else if(elem.roleLevel == "mid" && MuxNum!=0){
+                                    // allotArr.push(elem);
+                                    // elem.projectId = id;
+                                    // elem.projectStartDate = startDate;
+                                    // elem.projectEndDate = endDate;
+                                    // elem.save();
                                     allotArr.push(elem);
-                                    elem.projectId = id;
-                                    elem.projectStartDate = startDate;
-                                    elem.projectEndDate = endDate;
+                                    let obj = {
+                                        projectId: id,
+                                        projectStartDate: startDate,
+                                        projectEndDate: endDate
+                                    }
+                                    elem.project.push(obj);
                                     elem.save();
                                     MuxNum--
                                 }
                                 else if(elem.roleLevel == "junior" && JuxNum!=0){
+                                    // allotArr.push(elem);
+                                    // elem.projectId = id;
+                                    // elem.projectStartDate = startDate;
+                                    // elem.projectEndDate = endDate;
+                                    // elem.save();
                                     allotArr.push(elem);
-                                    elem.projectId = id;
-                                    elem.projectStartDate = startDate;
-                                    elem.projectEndDate = endDate;
+                                    let obj = {
+                                        projectId: id,
+                                        projectStartDate: startDate,
+                                        projectEndDate: endDate
+                                    }
+                                    elem.project.push(obj);
                                     elem.save();
                                     JuxNum--;
                                 }
@@ -263,8 +346,8 @@ app.post("/createProject", async (req, res) => {
                     })
                 })
 
-                    // console.log(allotArr);
-                    // console.log(mainArr);
+                    console.log(allotArr);
+                    console.log(mainArr);
                     
                     res.render("ProjectEmp", {allotArr, team, arr})
                 }
