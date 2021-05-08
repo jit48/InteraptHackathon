@@ -190,15 +190,29 @@ app.get("/employees/:empId",(req,res)=>{
 // -------------------------------------------------------------------------------------
 
 
+// app.get("/createProject", function (req, res) {
+//     res.render("createProject");
+// });
+
 app.get("/createProject", function (req, res) {
-    res.render("createProject");
+    if(req.isAuthenticated()){
+        let upid=req.user._id;
+         console.log(upid);
+        res.render("createProject",{upid});
+    }
+    else {
+        res.render("pmLogin")
+    }
+   
 });
+
 app.post("/createProject", async (req, res) => {
     let arr = [];
     let team = [];
     let allotArr = [];
     let SEngrNum, MEngrNum, JEngrNum, SuxNum, MuxNum, JuxNum;
     const {
+        Oid,
         Mainframe,
         JAVA,
         ANGULAR,
@@ -278,6 +292,22 @@ app.post("/createProject", async (req, res) => {
         location
     });
     project.save();
+
+    User.find({_id:Oid}, (err,founduser)=>{
+        if(founduser){
+            //console.log(founduser);
+            let obj = {
+                projectId: id,
+                projectStartDate: startDate,
+                projectEndDate: endDate
+            }
+            //console.log(founduser[0].project);
+            founduser[0].project.push(obj)
+            founduser[0].save();
+        }
+     });
+
+
     let updatedUsers = [];
     User.find({skills: {$in: arr}, location: location.toUpperCase()},(err, foundUsers) => {
         if (err) {
@@ -301,7 +331,7 @@ app.post("/createProject", async (req, res) => {
                     }
                 });
                 
-                console.log(updatedUsers);
+                //console.log(updatedUsers);
                 var mainArr = [];
                 arr.forEach(Element => {
                     updatedUsers.forEach(user => {
