@@ -4,9 +4,18 @@
         <%- include('partials/empNav') -%>
     </div>
     <div class="empLandingContainer">
+        <div class="search">
+            <input type="text" id="find">
+            <button  name="empSearch" type="submit" id="empSearch">Search For Emp</button>
+            <button  name="projSearch" type="submit" id="projSearch">Search For Proj</button>
+            <div class="projResults" id="Results"></div>
+            <div class="projResults" id="empResults"></div>
+            <div class="projResults" id="projResults"></div>
+            <script src="js/dashboard.js"></script>
+        </div>
         <div class="empElements">
             <div class="empDetails">
-                <h1><%=passedname.toUpperCase() %></h1>
+                <h1><%=passedname.toUpperCase()%></h1>
                 <p><%=level %>, <%= techrole %></p>
             </div>
             <hr>

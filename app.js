@@ -636,9 +636,9 @@ app.post("/empLogin",(req,res)=>{
         }
         
         else{
-            console.log(req.user)
+            //console.log(req.user)
             passport.authenticate('local',{failureRedirect: '/empLogin'})(req,res,function(){
-                console.log(req.user);
+                //console.log(req.user);
                 if(req.user.role.toUpperCase()=="UX" || req.user.role.toUpperCase()=="ENGR" ){
                     res.redirect("/empLanding");
                 }

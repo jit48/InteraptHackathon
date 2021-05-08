@@ -257,3 +257,11 @@ body{
 .userDetails-role p {
     margin: 10px 20px;
 }
+
+.Create-Form{
+    margin-left: 250px;
+}
+
+.Create-Form h1 {
+    padding-top: 15px;
+}
