@@ -4,14 +4,25 @@
         <%- include('partials/empNav') -%>
     </div>
     <div class="empLandingContainer">
+        <!-- <div class="search">
+            <input type="text" id="find">
+            <button  name="empSearch" type="submit" id="empSearch">Search For Emp</button>
+            <button  name="projSearch" type="submit" id="projSearch">Search For Proj</button>
+            <div class="projResults" id="Results"></div>
+            <div class="projResults" id="empResults"></div>
+            <div class="projResults" id="projResults"></div>
+            <script src="js/dashboard.js"></script>
+        </div> -->
+      
+        <!-- <button><a class="button" href="/search">Search For Employees and Projects</a></button> -->
         <div class="empElements">
             <div class="empDetails">
-                <h1><%=passedname.toUpperCase() %></h1>
+                <h1><%=passedname.toUpperCase()%></h1>
                 <p><%=level %>, <%= techrole %></p>
             </div>
             <hr>
             <div class="empBio">
-                <p><b>Location :         </b> <%=location %></p>
+                <p><b>Location :</b> <%=location %></p>
                 <p><b>Gender :          </b><%=gen%></p>
                 <p><b>Joining Date:          </b><%=startdate %></p>
                 <div class="empTechSkill">
@@ -20,10 +31,11 @@
                     <p> <%=elem%>,</p> 
                     <%})%>
                 </div>
-                <div class="emp-btn-group">
-                    <button class="emp-button" id="showProjDetails">Current Project Details</button>
-                    <button class="emp-button" id="showProjDetails">Completed Projects Details</button>
-                </div>
+                
+            </div>
+            <div class="emp-btn-group">
+                <button class="emp-button" id="showProjDetails">Current Project Details</button>
+                <button class="emp-button" id="showProjDetails">Completed Projects Details</button>
             </div>
         </div>
     </div> 

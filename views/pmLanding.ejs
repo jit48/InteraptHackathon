@@ -1,17 +1,41 @@
+
 <%- include('partials/header') -%>
 
     <div>
         <%- include('partials/pmNav') -%>
+
     </div>
-    <div class="pmcontainer">
-        <h1>
-            PM landing
-        </h1>
-        <div>
-        <a href="/createProject">Create Project</a>
+    <div class="container">
+        <!-- <div class="navbar">
+            <input type="text" id="find">
+            <button  name="empSearch" type="submit" id="empSearch">Search For Emp</button>
+            <button  name="projSearch" type="submit" id="projSearch">Search For Proj</button>
         </div>
+                <h1 id="activeProjects">Active Projects</h1>
+                <h1 id="Employees">Employees</h1>
+        <div class="projResults" id="Results"></div>
+        <div class="projResults" id="empResults"></div>
+        <div class="projResults" id="projResults"></div>
+        <script src="js/dashboard.js"></script> -->
+
+        <div class="pm-btn-group">
+            <button class="pm-button"><a href="/createProject">Create New Project</a></button>
+            <button class="pm-button"><a href="/search">Search</a></button>
+        </div>
+        <h1>
+            <% projects.forEach((project,i) => { %>
+                <div>
+                    <form action="/completeProject" method="post">
+                        <input type="text" name="projectId" value="<%=project.projectId%>" style="display: none;">
+                        <button type="submit">Mark Project Complete</button>
+                    </form>
+                    <button><a href="/projects/<%=project.projectId%>">Project <%=i%></a></button>
+                </div>
+            <%})%>
+
+        </h1>
         <div>
             completed project
         </div>
-    </div>
+</div>
     <%- include('partials/footer') -%>

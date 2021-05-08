@@ -5,27 +5,32 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 </head>
 <body>
-    <h1>Register here!</h1>
+   
+    <div class="container">
+        <h1>Register here!</h1>
+    <div class="form-group">
     <form action="/empRegister" method="POST">
         <div>
             <label>Full Name</label>
-            <input type="text" name="fullname" placeholder="Enter Name"
+            <input class="form-control" type="text" name="fullname" placeholder="Enter Name"
             value="<% typeof fullname != 'undefined' ? fullname : '' %>"
             required >
         </div>
         <br>
     <div>
         <label>Username</label>
-        <input type="text" name="username" placeholder="Enter username"
+        <input class="form-control" type="text" name="username" placeholder="Enter username"
         value="<% typeof username != 'undefined' ? username : '' %>"
         required >
     </div>
     <br>
     <div>
         <label>Password: </label>
-        <input type="password" name="password" placeholder="Enter Password"
+        <input class="form-control" type="password" name="password" placeholder="Enter Password"
         value="<% typeof email != 'undefined' ? password : '' %>"
         required >
     </div>
@@ -33,40 +38,40 @@
     <div>
         <label>Gender</label>
         <br>
-        <input type="radio" id="male" name="gender" value="M">
+        <input class="form-check-input" type="radio" id="male" name="gender" value="M">
         <label for="male">Male</label><br>
-        <input type="radio" id="female" name="gender" value="F">
-        <label for="female">Female</label><br>
+        <input class="form-check-input" type="radio" id="female" name="gender" value="F">
+        <label  for="female">Female</label><br>
     </div>
     <br>
     <div>
         <label>Location</label>
-        <input type="text" name="location" placeholder="Enter location" required>
+        <input class="form-control" type="text" name="location" placeholder="Enter location" required>
     </div>
     <br>
     <div>
         <label>Joining Date</label>
-        <input type="date" name="startDate" placeholder="Joining Date" required>
+        <input class="form-control" type="date" name="startDate" placeholder="Joining Date" required>
     </div>
     <br>
     <div>
         <label>Role</label>
         <br>
-        <input type="radio" id="engr" name="role" value="ENGR">
+        <input class="form-check-input" type="radio" id="engr" name="role" value="ENGR">
         <label for="engineer">Engineer</label><br>
-        <input type="radio" id="pm" name="role" value="PM">
+        <input class="form-check-input" type="radio" id="pm" name="role" value="PM">
         <label for="product manager">Product Manager</label><br>
-        <input type="radio" id="ux" name="role" value="UX">
+        <input class="form-check-input" type="radio" id="ux" name="role" value="UX">
         <label for="ux">UX</label><br>
     </div>
     <br>
     <div>
         <label>Role-Level</label><br>
-        <input type="radio" id="senior" name="rolelevel" value="senior">
+        <input class="form-check-input" type="radio" id="senior" name="rolelevel" value="senior">
         <label for="male">Senior</label><br>
-        <input type="radio" id="mid" name="rolelevel" value="mid">
+        <input class="form-check-input" type="radio" id="mid" name="rolelevel" value="mid">
         <label for="female">Mid</label><br>
-        <input type="radio" id="junior" name="rolelevel" value="junior">
+        <input class="form-check-input" type="radio" id="junior" name="rolelevel" value="junior">
         <label for="female">Junior</label>
         <br> 
     </div>
@@ -74,47 +79,49 @@
     <div>
         <label>Project Role</label>
         <br>
-        <input type="radio" id="interviewer" name="Prole" value="interviewer">
+        <input class="form-check-input" type="radio" id="interviewer" name="Prole" value="interviewer">
         <label for="male">Interviewer</label><br>
-        <input type="radio" id="security" name="Prole" value="security">
+        <input class="form-check-input" type="radio" id="security" name="Prole" value="security">
         <label for="female">Security Maven</label><br>
-        <input type="radio" id="anchor" name="Prole" value="anchor">
+        <input class="form-check-input" type="radio" id="anchor" name="Prole" value="anchor">
         <label for="female">Anchor</label><br>
     </div>
     
     <br>
     <div>
         <label>Vendor</label>
-        <input type="text" name="vendor" placeholder="Enter Vendor Name(if on contract)">
+        <input class="form-control" type="text" name="vendor" placeholder="Enter Vendor Name(if on contract)">
     </div>
     <br>
     <div>
         <label>Skills</label>
         <br>
-        <input type="checkbox" id="cloud" name="cloud" value="cloud">
+        <input class="form-check-input" type="checkbox" id="cloud" name="cloud" value="cloud">
         <label for="vehicle1"> Cloud</label><br>
-        <input type="checkbox" id="mainframe" name="mainframe" value="mainframe">
+        <input class="form-check-input" type="checkbox" id="mainframe" name="mainframe" value="mainframe">
         <label for="vehicle2">Mainframe</label><br>
-        <input type="checkbox" id="angular" name="angular" value="angular">
+        <input class="form-check-input" type="checkbox" id="angular" name="angular" value="angular">
         <label for="vehicle3">Angular</label><br>
-        <input type="checkbox" id="NET" name="NET" value="NET">
+        <input class="form-check-input" type="checkbox" id="NET" name="NET" value="NET">
         <label for="vehicle3">.NET</label><br>
-        <input type="checkbox" id="IBM" name="IBM" value="IBM">
+        <input class="form-check-input" type="checkbox" id="IBM" name="IBM" value="IBM">
         <label for="vehicle3">IBM/Websphere</label><br>
-        <input type="checkbox" id="java" name="java" value="java">
+        <input class="form-check-input" type="checkbox" id="java" name="java" value="java">
         <label for="vehicle3">JAVA</label><br>
 </div>
     <br>
     <div>
         <label>Transferrable</label>
         <br>
-        <input type="radio" name="transferrable" value="true">
+        <input class="form-check-input" type="radio" name="transferrable" value="true">
         <label>Yes</label>
-        <input type="radio" name="transferrable" value="false">
+        <input class="form-check-input" type="radio" name="transferrable" value="false">
         <label>No</label>
     </div>
     <br>
-    <button type="submit">Submit</button>
+    <button class="btn btn-info" type="submit">Submit</button>
     </form>
+    </div>
+    </div>
 </body>
 </html>

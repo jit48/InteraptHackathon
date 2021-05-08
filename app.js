@@ -190,8 +190,7 @@ app.get("/employees/:empId",(req,res)=>{
 app.get("/createProject", function (req, res) {
     if(req.isAuthenticated()){
         let upid=req.user._id;
-        //  console.log(upid);
-        console.log(req.user);
+         //console.log(upid);
         res.render("createProject",{upid});
     }
     else {
@@ -271,9 +270,9 @@ app.post("/createProject", async (req, res) => {
         JuxNum = JUX; 
     }
     // console.log(req.body);
-    console.log(arr);
+    //console.log(arr);
 
-    console.log(team);
+    //console.log(team);
     // const skillReq = req.body.skill;
     var id = uuid();
     const project = new Project({
@@ -295,8 +294,8 @@ app.post("/createProject", async (req, res) => {
                 projectStartDate: startDate,
                 projectEndDate: endDate
             }
-            // console.log(founduser[0].project);
-            founduser[0].project.push(obj);
+            //console.log(founduser[0].project);
+            founduser[0].project.push(obj)
             founduser[0].save();
         }
      });
@@ -465,14 +464,21 @@ app.post("/createProject", async (req, res) => {
                     // console.log(allotArr);
                     // console.log(mainArr);
                     
-                    res.render("ProjectEmp", {allotArr, team, arr})
+                    res.render("ProjectEmp", {allotArr, team, arr, id})
                 }
             );
 
 
         });
 
-
+app.post("/role", function(req, res){
+    var secMaven = req.body.id;
+    User.findOne({_id: secMaven}, (err, foundUser) => {
+        foundUser.projectRole = "Security Maven";
+        foundUser.save();
+    });
+});
+  
 
 /*//////////////////////////////////////////////////////////////
 REGISTER
@@ -592,9 +598,9 @@ app.post("/login",(req,res)=>{
         }
         
         else{
-            console.log(req.user)
+            //console.log(req.user)
             passport.authenticate('local',{failureRedirect: '/pmLogin'})(req,res,function(){
-                console.log(req.user);
+                //console.log(req.user);
                 if(req.user.role.toUpperCase()=="PM"){
                     res.redirect("/pmLanding");
                 }
@@ -630,9 +636,9 @@ app.post("/empLogin",(req,res)=>{
         }
         
         else{
-            console.log(req.user)
+            //console.log(req.user)
             passport.authenticate('local',{failureRedirect: '/empLogin'})(req,res,function(){
-                console.log(req.user);
+                //console.log(req.user);
                 if(req.user.role.toUpperCase()=="UX" || req.user.role.toUpperCase()=="ENGR" ){
                     res.redirect("/empLanding");
                 }
@@ -649,10 +655,19 @@ app.post("/empLogin",(req,res)=>{
 
 
         
-        app.get("/pmLanding", (req, res) => {
-            res.render('pmLanding')
-        })
-
+    app.get("/pmLanding", (req, res) => {
+        const projs = [];
+        if(req.isAuthenticated()){
+            req.user.project.forEach(project => {
+                if(project.isCompleted == false){
+                    projs.push(project);
+                }
+            })
+            res.render("pmLanding",{projects:projs})
+        }else{
+            res.redirect("/pmLogin")
+        }
+    })
 
         // app.get("/empLanding",function(req,res){ 
         //     let name;
@@ -736,6 +751,18 @@ app.post("/empLogin",(req,res)=>{
             }
             else res.redirect("/empLogin");     
         })
+
+
+        app.get("/search", function(req,res){
+            res.render("search");
+        });
+
+
+
+        app.get('/logout', function (req, res) {
+            req.logout();
+            res.redirect('/');
+        });
         // -------------------------------------------------------------------
         //                          PORT
         // -------------------------------------------------------------------
