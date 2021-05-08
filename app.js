@@ -54,10 +54,10 @@ const userSchema = new mongoose.Schema({
     score: Number,
     location: String,
     project: [{
+        isCompleted:Boolean,
         projectId: String,
         projectStartDate: String,
         projectEndDate: String
-    
     }],
     transferrable: Boolean
 });
@@ -123,6 +123,8 @@ app.get("/projectData",(req,res)=>{
 app.get("/projects/:projectId",(req,res)=>{
     const reqProj = req.params.projectId;
     let arr = [];
+    let male,female;
+    let genderRatio;
     let engineers = [];
     let designers = [];
     Project.find({projectId: reqProj} , (err,foundProject)=>{
@@ -137,13 +139,18 @@ app.get("/projects/:projectId",(req,res)=>{
                 console.log(err);
             }else{
                 foundUsers.forEach(user => {
-                    if(user.role == 'engr'){
+                    if(user.role == 'ENGR'){
                         engineers.push(user);
                     }else if(user.role == 'UX'){
                         designers.push(user);
+                    }else if(user.gender == "M"){
+                        male += 1;
+                    }else if(user.female == "F"){
+                        female += 1;
                     }
                 })
-                res.render("project",{foundUsers,arr,engineers,designers})
+                genderRatio = (male/female) * 100 ;
+                res.render("project",{foundUsers,arr,engineers,designers,genderRatio})
             }
         })
     })
@@ -273,15 +280,20 @@ app.post("/createProject", async (req, res) => {
         startDate,
         endDate,
         totalResources: resources,
-        location
+        location,
+        isCompleted:false
     });
     project.save();
     let updatedUsers = [];
     User.find({skills: {$in: arr}, location: location.toUpperCase()},(err, foundUsers) => {
         if (err) {
             console.log(err);
-        } else {                                            
+        } else {       
+                                   
                 foundUsers.forEach(elem => {
+                    if(elem.score != 0){
+                        elem.score = 0; 
+                    }
                     var len = elem.project.length;
                     var flag;
                     for(var i=0;i<len;i++){
@@ -514,6 +526,7 @@ app.get("/register", (req, res) => {
                 score: 0,
                 location: location,
                 project: {
+                    isCompleted:false,
                     projectId: projectId,
                     projectStartDate: projectStartDate,
                     projectEndDate: projectEndDate
@@ -568,7 +581,6 @@ app.post("/login",(req,res)=>{
         else{
             console.log(req.user)
             passport.authenticate('local',{failureRedirect: '/pmLogin'})(req,res,function(){
-                console.log(req.user);
                 if(req.user.role.toUpperCase()=="PM"){
                     res.redirect("/pmLanding");
                 }
@@ -604,9 +616,7 @@ app.post("/empLogin",(req,res)=>{
         }
         
         else{
-            console.log(req.user)
             passport.authenticate('local',{failureRedirect: '/empLogin'})(req,res,function(){
-                console.log(req.user);
                 if(req.user.role.toUpperCase()=="UX" || req.user.role.toUpperCase()=="ENGR" ){
                     res.redirect("/empLanding");
                 }
@@ -624,29 +634,79 @@ app.post("/empLogin",(req,res)=>{
 
         
         app.get("/pmLanding", (req, res) => {
-            res.render('pmLanding')
+            const projs = [];
+            if(req.isAuthenticated()){
+                req.user.project.forEach(project => {
+                    if(project.isCompleted == false){
+                        projs.push(project);
+                    }
+                })
+                res.render("pmLanding",{projects:projs})
+            }else{
+                res.redirect("/pmLogin")
+            }
         })
 
 
         app.get("/empLanding",function(req,res){ 
             let name;
             if(req.isAuthenticated()){
-                console.log(req.user);
                 name = req.user.username;
-                console.log(name);
                 res.render("empLanding",{passedname:name});    
             }
             
         })
-
-
+        // -------------------------------------------------------------------
+        //                          completeProject
+        // -------------------------------------------------------------------
+            app.post("/completeProject",(req,res)=>{
+                const projectId = req.body.projectId;
+                let arr = [],completedProjects=[],ongoingProjects=[];
+                Project.find({projectId: projectId},(err,foundProject)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        foundProject[0].isCompleted = true;
+                        foundProject[0].save();
+                    }
+                })
+                User.find({},(err,foundUsers)=>{
+                    if(err){
+                        console.log(err);
+                    }else{
+                        foundUsers.forEach(user => {
+                            user.project.forEach(item=>{
+                                if(item.projectId == projectId){
+                                    arr.push(user);
+                                }
+                            })                     
+                        })
+                        arr.forEach(item => {
+                            item.project.forEach(project =>{
+                                if(project.projectId == projectId){
+                                    project.isCompleted = true;
+                                    completedProjects.push(project); 
+                                    item.save();
+                                }else{
+                                    if(project.isCompleted == true){
+                                        completedProjects.push(project)
+                                    }else{
+                                        ongoingProjects.push(project);
+                                    }
+                                }
+                            })
+                        });
+                        res.render("completed/Ongoing",{completedProjects,ongoingProjects});
+                    }
+                })
+            })
         // -------------------------------------------------------------------
         //                          PORT
         // -------------------------------------------------------------------
 
-app.listen(3000 , ()=>{
-    console.log("server running at port 3000");
-});
+        app.listen(3000 , ()=>{
+            console.log("server running at port 3000");
+        });
 
 
 // "https://xd.adobe.com/view/26bb4dd1-2368-4f71-bf5f-4d7927e93c17-73e8/screen/dbab38c8-e61c-4720-92e2-c5536bfb53af/specs/"
