@@ -4,11 +4,6 @@ const projSearch = document.getElementById('projSearch');
 const projResults = document.getElementById('projResults');
 const empResults = document.getElementById('empResults');
 const Results = document.getElementById('Results');
-// const activeResults = document.getElementById('activeResults');
-// const empResults_one = document.getElementById('empResults-one');
-// const projResults_one = document.getElementById('projResults-one');
-const activeProjects = document.getElementById('activeProjects');
-const employees = document.getElementById('Employees');
 let searchText = search.value;
 window.addEventListener('load',()=>{
     data();
@@ -19,8 +14,6 @@ window.addEventListener('load',()=>{
 // })
 
 empSearch.addEventListener('click', ()=>{
-    activeProjects.classList.add('displayNone')
-    employees.classList.remove('displayNone')
     empResults.classList.remove('displayNone')
     projResults.classList.add('displayNone')
     empData();
@@ -32,7 +25,7 @@ empSearch.addEventListener('click', ()=>{
             const regex = new RegExp(`^${searchText.toString()}`,'gi');
             return d.username.match(regex) ||  d._id.match(regex) || d.location.match(regex) || d.vendor.match(regex) 
         })
-        activeResults.classList.add('displayNone');
+        Results.classList.add('displayNone');
         outputHtml(matches);
     }
     
@@ -42,8 +35,6 @@ empSearch.addEventListener('click', ()=>{
 })
 
 projSearch.addEventListener('click', ()=>{
-    activeProjects.classList.remove('displayNone')
-    employees.classList.add('displayNone')
     projResults.classList.remove('displayNone');
     empResults.classList.add('displayNone');
     data();
@@ -57,7 +48,7 @@ projSearch.addEventListener('click', ()=>{
             return d.projectName.match(regex) || d.projectId.match(regex) || d.location.match(regex)
         })
         console.log(matches);
-        activeResults.classList.add('displayNone');
+        Results.classList.add('displayNone');
         outputHtmlProject(matches);
     }
     search.addEventListener('input', ()=>{
@@ -122,7 +113,6 @@ function outputHtmlProject(matches){
     }
 }
 async function data(){
-    employees.classList.add('displayNone');
     const res = await fetch('http://localhost:3000/projectData');
     let data = await res.json();
     console.log(data);
@@ -143,7 +133,6 @@ async function data(){
         Results.innerHTML = html
 }
 async function empData(){
-    activeProjects.classList.add('displayNone');
     const res = await fetch('http://localhost:3000/employees');
     const data = await res.json();
     console.log(data);
@@ -157,7 +146,7 @@ async function empData(){
             <p>${d.role}</p>
         </div>
         <div class="button">
-            <a href="/employees/${d._id}">explore</a>
+            <a href="/projects/${d.Id}">explore</a>
         </div>
     </div>`
 )).join('');
