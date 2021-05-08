@@ -1,0 +1,155 @@
+body{
+    background-color: #f4f5f7;
+    font-family: 'Raleway', sans-serif;
+}
+.addMargin{
+    margin: 10px 20px
+}
+.makeFlex{
+    display: flex;
+}
+.addPadding-right{
+    padding-left: 10px;
+}
+.navbar{
+    width:100vw;
+    padding-right:60px;
+    height: 10vh;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    background-color: #ffff;
+}
+.extendWidth{
+    width: 30vw;
+    transition: width 0.5s ;
+}
+.navbar button{
+    width: 160px;
+    height: 40px;
+    margin: 20px;
+    border: none;
+    display: flex;
+    border-radius: 5px ;
+    /* padding-right: 40px; */
+    justify-content: center;
+    align-items: center;
+    background-color: #5b57ee;
+    color: #f4f5f7;
+}
+
+.navbar input{
+    border: 2px solid rgb(192, 190, 190);
+    border-radius: 5px;
+    height: 40px;
+    margin-right: 40px;
+
+}
+.teams-div{
+    display: flex;
+    flex-direction: column;
+}
+.displayNone{
+    display: none !important;
+}
+.score-div{
+    width: 80vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.projResults{
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.projectCard{
+    background-color: #ffff;
+    margin: 15px;
+    width: 250px;
+    height: 300px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5px;
+    justify-content: space-evenly;
+    /* box-shadow: 10px -7px 12px 5px rgba(0,0,0,0.5); */
+}
+.projectDetails{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.button{
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5b57ee;
+    width: 160px;
+    height: 40px;
+}
+
+.button a{
+    text-decoration: none;
+    color: white;
+}
+.projectHeader{
+    padding: 30px 10px ;
+    border-radius: 5px;
+    background-color: #ffff;
+}
+.projectHeader-header{
+    margin: 20px 0 ;
+    padding: 40px 10px ;
+    border-radius: 5px;
+    background-color: #ffff;
+}
+.projectHeader p{
+ text-align: justify;
+}
+.projectOtherDetails{
+    display: flex;
+}
+
+.empSpecificProjDetails{
+    margin: 0px 40px;
+}
+.projEmployees{
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.userDetails{
+    padding: 20px;
+    background-color: #ffff;
+    border-radius: 5px;
+}
+.userDetails-skills{
+    display: flex;
+}
+.userDetails-skills p{
+    margin: 10px 20px;
+}
+
+.userDetails-details h1{
+    font-size: 3rem;
+    margin: 0 20px;
+}
+
+.userDetails-details p {
+    margin: 10px 20px;
+
+}
+.userDetails-role{
+    display: flex;
+}
+.userDetails-role p {
+    margin: 10px 20px;
+}
