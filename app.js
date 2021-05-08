@@ -40,8 +40,9 @@ const projectSchema = new mongoose.Schema({
     location: String
 })
 const userSchema = new mongoose.Schema({
-    username: String,
-    password: String,
+    fullname: String,
+    username : String,
+    password : String,
     role: String,
     roleLevel: String,
     projectRole: String,
@@ -69,20 +70,9 @@ passport.deserializeUser(User.deserializeUser());
 
 const Project = mongoose.model("Project", projectSchema);
 
-
-// const project = new Project({
-//         projectId: "dc9bfc19-47e0-4f56-a751-84a616822fc9",
-//         projectName: "Google",
-//         description: "We've to make google",
-//         totalResources: 5,
-//         location: "IL",
-//         __v: 0,
-//         endDate: "2021-10-29",
-//         startDate: "2021-03-01"
-//       })
-
-// project.save();
-
+//-----------------------------------------------------------------------------------
+//                                   HOME ROUTE
+//-----------------------------------------------------------------------------------
 app.get("/", function (req, res) {
     res.render("index");
 })
@@ -91,6 +81,7 @@ app.get("/", function (req, res) {
 // -------------------------------------------------------------------------------------
 //                                 RESOURCE ALLOCATION
 // -------------------------------------------------------------------------------------
+
 
 app.get("/createProject", function (req, res) {
     res.render("createProject");
@@ -124,7 +115,7 @@ app.post("/createProject", async (req, res) => {
     } = req.body;
     if (Mainframe != undefined) {
         arr.push(Mainframe);
-    }
+       }
     if (JAVA != undefined) {
         arr.push(JAVA);
     }
@@ -166,6 +157,7 @@ app.post("/createProject", async (req, res) => {
     }
     // console.log(req.body);
     console.log(arr);
+
     console.log(team);
     // const skillReq = req.body.skill;
     var id = uuid();
@@ -282,17 +274,21 @@ app.post("/createProject", async (req, res) => {
         });
 
 
-        /*
-REGISTER
-*/
 
-        app.get("/register", (req, res) => {
+/*//////////////////////////////////////////////////////////////
+
+REGISTER
+
+////////////////////////////////////////////////////////////////*/
+
+app.get("/register", (req, res) => {
             res.render('register');
         });
 
         app.post("/empRegister", function (req, res) {
             console.log(req.body);
             const {
+                fullname,
                 username,
                 password,
                 location,
@@ -335,6 +331,7 @@ REGISTER
 
             // console.log(arr);
             User.register({
+                fullname: fullname,
                 username: username,
                 role: role,
                 roleLevel: rolelevel,
@@ -370,6 +367,95 @@ REGISTER
             })
         })
 
+
+   
+
+
+/*//////////////////////////////////////////////////////////////
+
+ PM-LOGIN
+
+////////////////////////////////////////////////////////////////*/
+
+
+
+
+app.get("/pmLogin",(req,res)=>{
+    res.render('pmLogin')
+})
+
+
+app.post("/login",(req,res)=>{
+    const user = new User({
+        username: req.body.username,
+        password: req.body.password
+    });
+
+    req.login(user,function(err){
+        if(err){
+            console.log(err);
+        }
+        
+        else{
+            console.log(req.user)
+            passport.authenticate('local',{failureRedirect: '/pmLogin'})(req,res,function(){
+                console.log(req.user);
+                if(req.user.role.toUpperCase()=="PM"){
+                    res.redirect("/pmLanding");
+                }
+            });
+                
+         }
+    });
+
+});
+
+
+
+
+/*//////////////////////////////////////////////////////////////
+
+ EMP-LOGIN
+
+////////////////////////////////////////////////////////////////*/
+
+
+app.get("/empLogin",(req,res)=>{
+    res.render('empLogin')
+})
+
+
+app.post("/empLogin",(req,res)=>{
+    const user = new User({
+        username: req.body.username,
+        password: req.body.password
+    });
+
+    req.login(user,function(err){
+        if(err){
+            console.log(err);
+        }
+        
+        else{
+            console.log(req.user)
+            passport.authenticate('local',{failureRedirect: '/empLogin'})(req,res,function(){
+                console.log(req.user);
+                if(req.user.role.toUpperCase()=="UX" || req.user.role.toUpperCase()=="ENGR" ){
+                    res.redirect("/empLanding");
+                }
+            });
+                
+         }
+    });
+
+});
+
+    // -------------------------------------------------------------------
+    //                          LANDING ROUTES
+    // -------------------------------------------------------------------
+
+
+        
         app.get("/pmLanding", (req, res) => {
             res.render('pmLanding')
         })
