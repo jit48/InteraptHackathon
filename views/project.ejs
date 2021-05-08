@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Document</title>
+</head>
+<body>
+
+        <% arr.forEach(item => { %>
+            <div class="projectHeader projectHeader-header">
+                <h1><%= item.projectName %></h1>
+                <p><%= item.description %> </p>
+            </div>
+            <div class="projectHeader projectOtherDetails">
+                <div>
+                    <p> <b>Starting Date:</b> <%= item.startDate %></p>
+                    <p> <b> Ending Date:</b> <%= item.endDate %></p>
+                    <p> <b> Project Location:</b> <%= item.location %></p>
+                    <p> <b> Total Resouces Deployed:</b> <%= item.totalResources %> </p>
+                </div>
+                <div class="empSpecificProjDetails">
+                    <% foundUsers.forEach(user=>{%>
+                        <% if(user.projectRole == 'interviewer'){ %>
+                            <p><b> Project Manager :</b> <%= user.username %> </p>
+                        <% } %>
+                    <% }) %>
+                    <% foundUsers.forEach(user=>{%>
+                        <% if(user.projectRole == 'security'){ %>
+                            <p><b> Security Mavern :</b> <%= user.username %> </p>
+                        <% } %>
+                    <% }) %>
+                    <% foundUsers.forEach(user=>{%>
+                        <% if(user.projectRole == 'anchor'){ %>
+                            <p><b> Anchor For the Project :</b> <%= user.username %> </p>
+                        <% } %>
+                    <% }) %>
+                </div>
+            </div>
+            <div class="projEmployees">
+                <div>
+                    <h1>Engineering Team</h1>
+                </div>
+                <div class="makeFlex">
+                    <%if(engineers.length == 0){%>
+                        <p>------</p>
+                    <%}else{%>
+                        <% engineers.forEach(user => {%>
+                            <%if(user.role == "engr"){%>
+                            <div class="projectCard">
+                                <div class="projectDetails">
+                                    <p><%=user.username %></p>
+                                    <p><%=user.location %></p>
+                                </div>
+                                <div class="projectStartDate">
+                                    <p><%=user.role%></p>
+                                    <p><%user.gender%></p>
+                                </div>
+                                <div class="button">
+                                    <a href= "/employees/<%=user._id%>">explore</a>
+                                </div>
+                            </div>
+                        <%}%>
+                        <% }); %>
+                    <%}%>
+ 
+                </div>
+                <div>
+                    <h1>UX Team</h1>
+                </div>
+                <div class="makeFlex">
+                <% if(designers.length == 0){%>
+                    <p>------</p>
+                <%}else{%>
+                    <% designers.forEach(user => {%>
+                        <%if(user.role == "UX"){%>
+                        <div class="projectCard">
+                            <div class="projectDetails">
+                                <p><%=user.username %></p>
+                                <p><%=user.location %></p>
+                            </div>
+                            <div class="projectStartDate">
+                                <p><%=user.role%></p>
+                                <p><%user.gender%></p>
+                            </div>
+                            <div class="button">
+                                <a href= "/employees/<%=user._id%>">explore</a>
+                            </div>
+                        </div>
+                    <%}%>
+                    <% }); %> 
+                <%}%>
+                </div>
+
+            </div>
+        <% }) %> 
+
+</body>
+</html>
