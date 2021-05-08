@@ -33,11 +33,12 @@ mongoose.connect(`mongodb+srv://${
 const projectSchema = new mongoose.Schema({
     projectId: String,
     projectName: String,
-    description: String,
-    startDate: String,
-    endDate: String,
-    totalResources: Number,
-    location: String
+    description:String,
+    startDate:String,
+    endDate:String,
+    totalResources:Number,
+    location:String,
+    isCompleted:Boolean,
 })
 const userSchema = new mongoose.Schema({
     fullname: String,
@@ -102,6 +103,85 @@ function numberToDate(nbr){
 //-----------------------------------------------------------------------------------
 app.get("/", function (req, res) {
     res.render("index");
+})
+
+
+app.get("/dashboard",(req,res)=>{
+res.render("dashboard");
+});
+
+app.get("/projectData",(req,res)=>{
+    Project.find({},(err,foundProjects)=>{
+        if(err){
+            console.log(err);
+        }else{
+            res.json(foundProjects);
+        }
+    })
+})
+
+app.get("/projects/:projectId",(req,res)=>{
+    const reqProj = req.params.projectId;
+    let arr = [];
+    let engineers = [];
+    let designers = [];
+    Project.find({projectId: reqProj} , (err,foundProject)=>{
+        if(err){
+            console.log(err);
+        }else{
+             arr = foundProject;
+        }
+    }).then(()=>{
+        User.find({"project.projectId": reqProj},(err,foundUsers)=>{
+            if(err){
+                console.log(err);
+            }else{
+                foundUsers.forEach(user => {
+                    if(user.role == 'engr'){
+                        engineers.push(user);
+                    }else if(user.role == 'UX'){
+                        designers.push(user);
+                    }
+                })
+                res.render("project",{foundUsers,arr,engineers,designers})
+            }
+        })
+    })
+    })
+
+
+
+
+/*
+
+REGISTER
+
+
+*/
+
+app.get("/register",(req,res)=>{
+    res.render('register')
+})
+
+app.get("/employees",(req,res)=>{
+    User.find({},(err,foundUsers)=>{
+        if(err){
+            console.log(err);
+        }else{
+            res.json(foundUsers);
+        }
+    })
+})
+
+app.get("/employees/:empId",(req,res)=>{
+    const reqEmployee = req.params.empId;
+    User.find({_id: reqEmployee},(err,foundUser)=>{
+        if(err){
+            console.log(err);
+        }else{
+            res.render("employee",{foundUser});
+        }
+    })
 })
 
 
@@ -204,12 +284,24 @@ app.post("/createProject", async (req, res) => {
             console.log(err);
         } else {                                            
                 foundUsers.forEach(elem => {
-                    elem.project.forEach(proj => {
-                        if(dateToNumber(proj.projectEndDate) < dateToNumber(startDate)){
-                            updatedUsers.push(elem);
+                    var len = elem.project.length;
+                    var flag;
+                    for(var i=0;i<len;i++){
+                        if(dateToNumber(elem.project[i].projectEndDate) < dateToNumber(startDate)){
+                            flag = true;
+                        }
+                        else{
+                            flag = false;
+                            break;
                         } 
-                    })
+                    }
+
+                    if(flag){
+                        updatedUsers.push(elem);
+                    }
                 });
+                
+                console.log(updatedUsers);
                 var mainArr = [];
                 arr.forEach(Element => {
                     updatedUsers.forEach(user => {
@@ -560,6 +652,9 @@ app.post("/empLogin",(req,res)=>{
         //                          PORT
         // -------------------------------------------------------------------
 
-        app.listen(3000, () => {
-            console.log("server running at port 3000");
-        });
+app.listen(3000 , ()=>{
+    console.log("server running at port 3000");
+});
+
+
+// "https://xd.adobe.com/view/26bb4dd1-2368-4f71-bf5f-4d7927e93c17-73e8/screen/dbab38c8-e61c-4720-92e2-c5536bfb53af/specs/"
