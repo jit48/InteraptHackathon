@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Project</title>
+</head>
+<body>
+    <form action="/createProject" method="POST">
+        <div class="teams-div">
+            <label for="projectName">Project Name</label>
+            <input type="text" name="projectName" placeholder="Enter Project Name">
+            <br>
+            <label for="projectDescription">Project Description</label>
+            <textarea name="projectDescription" id="" cols="100" rows="10" placeholder="Description"></textarea>
+            <br>
+            <label for="location">Location</label>
+            <input type="text" name="location" placeholder="Enter Location">
+            <br>
+            <label for="startDate">Start Date</label>
+            <input type="date" name="startDate" id="startDate">
+            <br>
+            <label for="endDate">End Date</label>
+            <input type="date" name="endDate" id="endDate">
+            <br>
+            <label for="Resources">Number of Resources Required</label>
+            <input type="number" name="resources" id="resources">
+            <br>
+            <div class="teams-div-sde">
+                <label for="SDE">Software Developer</label>
+                <input type="checkbox" name="SDE" id="SDE" value="Engr">
+                <div  id="sde-checkbox" style="display: none;">
+                    <label for="NodeJS">Mainframe</label>
+                    <input type="checkbox" name="Mainframe" id="" value="Mainframe">
+                    <label for="JAVA">JAVA</label>
+                    <input type="checkbox" name="JAVA" id="" value="Java">
+                    <label for="ANGULAR">ANGULAR</label>
+                    <input type="checkbox" name="ANGULAR" id="" value="ANGULAR"> 
+                    <label for="IBM">IBM/WEBSPHERE</label>
+                    <input type="checkbox" name="IBM" id="" value="IBM">
+                </div>
+            </div>
+            <br>
+            <div class="teams-div-designer">
+                <label for="Designer">UX</label>
+                <input type="checkbox" name="Designer" id="FDE" value="UX">
+                <div id="designer-checkbox" style="display: none;">
+                    <label for="NET">.NET</label>
+                    <input type="checkbox" name="NET" id="" value="NET">
+                    <label for="cloud">CLOUD</label>
+                    <input type="checkbox" name="cloud" id="" value="CLOUD">
+                </div>
+            </div>
+            <br>
+
+        </div>
+        <button type="submit">Create Project</button>
+    </form>
+    <script src="js/createProject.js"></script>
+</body>
+</html>
