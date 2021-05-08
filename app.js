@@ -57,6 +57,7 @@ const userSchema = new mongoose.Schema({
         projectId: String,
         projectStartDate: String,
         projectEndDate: String
+
     }],
     transferrable: Boolean
 });
@@ -71,11 +72,114 @@ passport.deserializeUser(User.deserializeUser());
 
 const Project = mongoose.model("Project", projectSchema);
 
+
+function dateToNumber(car){
+    let str=[]
+    for(let i = 0; i<car.length ; i++){
+        if(car[i] == '-'){
+            continue;
+        }else{
+            str.push(car[i]);
+        }
+    }
+    let newStr = str.join('');
+    let newNumber =  Number(newStr);
+    return newNumber;
+}
+function numberToDate(nbr){
+    let arr = []
+   for(let i= 0; i<nbr.length ; i++){
+       if(i == 3 || i == 5){
+           arr.push(nbr[i]);
+           arr.push("-");
+       }else{
+           arr.push(nbr[i]);
+       }
+   }
+   return arr.join(''); 
+}
 //-----------------------------------------------------------------------------------
 //                                   HOME ROUTE
 //-----------------------------------------------------------------------------------
 app.get("/", function (req, res) {
     res.render("index");
+})
+
+
+app.get("/dashboard",(req,res)=>{
+res.render("dashboard");
+});
+
+app.get("/projectData",(req,res)=>{
+    Project.find({},(err,foundProjects)=>{
+        if(err){
+            console.log(err);
+        }else{
+            res.json(foundProjects);
+        }
+    })
+})
+
+app.get("/projects/:projectId",(req,res)=>{
+    const reqProj = req.params.projectId;
+    let arr = [];
+    let engineers = [];
+    let designers = [];
+    Project.find({projectId: reqProj} , (err,foundProject)=>{
+        if(err){
+            console.log(err);
+        }else{
+             arr = foundProject;
+        }
+    }).then(()=>{
+        User.find({"project.projectId": reqProj},(err,foundUsers)=>{
+            if(err){
+                console.log(err);
+            }else{
+                foundUsers.forEach(user => {
+                    if(user.role == 'engr'){
+                        engineers.push(user);
+                    }else if(user.role == 'UX'){
+                        designers.push(user);
+                    }
+                })
+                res.render("project",{foundUsers,arr,engineers,designers})
+            }
+        })
+    })
+    })
+
+
+
+
+/*
+REGISTER
+*/
+
+app.get("/register",(req,res)=>{
+    res.render('register')
+})
+
+app.get("/employees",(req,res)=>{
+    User.find({},(err,foundUsers)=>{
+        if(err){
+            console.log(err);
+        }else{
+            res.json(foundUsers);
+        }
+    })
+})
+
+app.get("/employees/:empId",(req,res)=>{
+    const reqEmployee = req.params.empId;
+    User.find({_id: reqEmployee},(err,foundUser)=>{
+        if(err){
+            console.log(err);
+        }else{
+            console.log(foundUser);
+            res.render("employee",{foundUser});
+        }
+    })
 })
 
 
@@ -182,6 +286,7 @@ app.post("/createProject", async (req, res) => {
         location
     });
     project.save();
+
     // console.log(req.user);
     // const Oid = req.body.id;
      User.find({_id:Oid}, (err,founduser)=>{
@@ -197,15 +302,35 @@ app.post("/createProject", async (req, res) => {
             founduser[0].save();
         }
      })
-  
-    // console.log( ` project id for manager is ${req.user.project.projectId} startdate ${req.user.project.projectStartDate} and end date is${req.user.project.projectEndDate}`);
-    User.find({skills: {$in: arr}, location: location.toUpperCase(), "project.projectEndDate":{$lte: startDate}}, (err, foundUsers) => {
+
+    let updatedUsers = [];
+    User.find({skills: {$in: arr}, location: location.toUpperCase()},(err, foundUsers) => {
+
         if (err) {
             console.log(err);
-        } else {
+        } else {                                            
+                foundUsers.forEach(elem => {
+                    var len = elem.project.length;
+                    var flag;
+                    for(var i=0;i<len;i++){
+                        if(dateToNumber(elem.project[i].projectEndDate) < dateToNumber(startDate)){
+                            flag = true;
+                        }
+                        else{
+                            flag = false;
+                            break;
+                        } 
+                    }
+
+                    if(flag){
+                        updatedUsers.push(elem);
+                    }
+                });
+                
+                console.log(updatedUsers);
                 var mainArr = [];
                 arr.forEach(Element => {
-                    foundUsers.forEach(user => {
+                    updatedUsers.forEach(user => {
                         if (user.skills.includes(Element)) {
                             user.score += 1;
                         }
@@ -221,10 +346,10 @@ app.post("/createProject", async (req, res) => {
                     return 0;
                   }
                   
-                  foundUsers.sort( compare );
+                  updatedUsers.sort( compare );
             }       
                 team.forEach(team => {
-                        foundUsers.forEach(user => {
+                        updatedUsers.forEach(user => {
                             if (user.role.toUpperCase() == team.toUpperCase()) {
                                 mainArr.push(user);
                             }
@@ -237,52 +362,100 @@ app.post("/createProject", async (req, res) => {
                         if(team.toUpperCase() == elem.role.toUpperCase()){
                             if(team.toUpperCase() == "ENGR"){
                                 if(elem.roleLevel == "senior" && SEngrNum!=0){
+                                    // allotArr.push(elem);
+                                    // elem.project.projectId = id;
+                                    // elem.project.projectStartDate = startDate;
+                                    // elem.project.projectEndDate = endDate;
+                                    // elem.save();
                                     allotArr.push(elem);
-                                    elem.projectId = id;
-                                    elem.projectStartDate = startDate;
-                                    elem.projectEndDate = endDate;
+                                    let obj = {
+                                        projectId: id,
+                                        projectStartDate: startDate,
+                                        projectEndDate: endDate
+                                    }
+                                    elem.project.push(obj)
                                     elem.save();
                                     SEngrNum--;
                                 }
                                 else if(elem.roleLevel == "mid" && MEngrNum!=0){
+                                    // allotArr.push(elem);
+                                    // elem.project.projectId = id;
+                                    // elem.project.projectStartDate = startDate;
+                                    // elem.project.projectEndDate = endDate;
+                                    // elem.save();
                                     allotArr.push(elem);
-                                    elem.projectId = id;
-                                    elem.projectStartDate = startDate;
-                                    elem.projectEndDate = endDate;
+                                    let obj = {
+                                        projectId: id,
+                                        projectStartDate: startDate,
+                                        projectEndDate: endDate
+                                    }
+                                    elem.project.push(obj)
                                     elem.save();
                                     MEngrNum--
                                 }
                                 else if(elem.roleLevel == "junior" && JEngrNum!=0){
                                     allotArr.push(elem);
-                                    elem.projectId = id;
-                                    elem.projectStartDate = startDate;
-                                    elem.projectEndDate = endDate;
+                                    let obj = {
+                                        projectId: id,
+                                        projectStartDate: startDate,
+                                        projectEndDate: endDate
+                                    }
+                                    elem.project.push(obj);
                                     elem.save();
+                                    // elem.project.append.projectId = id;
+                                    // elem.project.append.projectStartDate = startDate;
+                                    // elem.project.projectEndDate = endDate;
+                                    // elem.project.push(obj);
+                                    // elem.save();
                                     JEngrNum--;
                                 }
                             }
                             else if(team == "UX"){
                                 if(elem.roleLevel == "senior" && SuxNum!=0){
+                                    // allotArr.push(elem);
+                                    // elem.projectId = id;
+                                    // elem.projectStartDate = startDate;
+                                    // elem.projectEndDate = endDate;
+                                    // elem.save();
                                     allotArr.push(elem);
-                                    elem.projectId = id;
-                                    elem.projectStartDate = startDate;
-                                    elem.projectEndDate = endDate;
+                                    let obj = {
+                                        projectId: id,
+                                        projectStartDate: startDate,
+                                        projectEndDate: endDate
+                                    }
+                                    elem.project.push(obj);
                                     elem.save();
                                     SuxNum--;
                                 }
                                 else if(elem.roleLevel == "mid" && MuxNum!=0){
+                                    // allotArr.push(elem);
+                                    // elem.projectId = id;
+                                    // elem.projectStartDate = startDate;
+                                    // elem.projectEndDate = endDate;
+                                    // elem.save();
                                     allotArr.push(elem);
-                                    elem.projectId = id;
-                                    elem.projectStartDate = startDate;
-                                    elem.projectEndDate = endDate;
+                                    let obj = {
+                                        projectId: id,
+                                        projectStartDate: startDate,
+                                        projectEndDate: endDate
+                                    }
+                                    elem.project.push(obj);
                                     elem.save();
                                     MuxNum--
                                 }
                                 else if(elem.roleLevel == "junior" && JuxNum!=0){
+                                    // allotArr.push(elem);
+                                    // elem.projectId = id;
+                                    // elem.projectStartDate = startDate;
+                                    // elem.projectEndDate = endDate;
+                                    // elem.save();
                                     allotArr.push(elem);
-                                    elem.projectId = id;
-                                    elem.projectStartDate = startDate;
-                                    elem.projectEndDate = endDate;
+                                    let obj = {
+                                        projectId: id,
+                                        projectStartDate: startDate,
+                                        projectEndDate: endDate
+                                    }
+                                    elem.project.push(obj);
                                     elem.save();
                                     JuxNum--;
                                 }
@@ -304,9 +477,7 @@ app.post("/createProject", async (req, res) => {
 
 
 /*//////////////////////////////////////////////////////////////
-
 REGISTER
-
 ////////////////////////////////////////////////////////////////*/
 
 app.get("/register", (req, res) => {
@@ -392,9 +563,7 @@ app.get("/register", (req, res) => {
 
 
 /*//////////////////////////////////////////////////////////////
-
  PM-LOGIN
-
 ////////////////////////////////////////////////////////////////*/
 
 
@@ -434,9 +603,7 @@ app.post("/login",(req,res)=>{
 
 
 /*//////////////////////////////////////////////////////////////
-
  EMP-LOGIN
-
 ////////////////////////////////////////////////////////////////*/
 
 
@@ -498,12 +665,9 @@ app.post("/empLogin",(req,res)=>{
         // -------------------------------------------------------------------
 
 
-
-
-
-
 app.listen(3000 , ()=>{
     console.log("server running at port 3000");
 });
 
+// "https://xd.adobe.com/view/26bb4dd1-2368-4f71-bf5f-4d7927e93c17-73e8/screen/dbab38c8-e61c-4720-92e2-c5536bfb53af/specs/"
 
