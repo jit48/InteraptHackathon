@@ -4,9 +4,27 @@
         <%- include('partials/empNav') -%>
     </div>
     <div class="empLandingContainer">
-        <h1>hello</h1>
         <div class="empElements">
-       
+            <div class="empDetails">
+                <h1><%=passedname.toUpperCase() %></h1>
+                <p><%=level %>, <%= techrole %></p>
+            </div>
+            <hr>
+            <div class="empBio">
+                <p><b>Location :         </b> <%=location %></p>
+                <p><b>Gender :          </b><%=gen%></p>
+                <p><b>Joining Date:          </b><%=startdate %></p>
+                <div class="empTechSkill">
+                    <p><b>Technical Skills :           </b></p>
+                    <% skill.forEach(elem =>{ %>
+                    <p> <%=elem%>,</p> 
+                    <%})%>
+                </div>
+                <div class="emp-btn-group">
+                    <button class="emp-button" id="showProjDetails">Current Project Details</button>
+                    <button class="emp-button" id="showProjDetails">Completed Projects Details</button>
+                </div>
+            </div>
         </div>
     </div> 
 <script src="js/empLanding.js">
