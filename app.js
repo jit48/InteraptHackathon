@@ -469,14 +469,21 @@ app.post("/createProject", async (req, res) => {
                     // console.log(allotArr);
                     // console.log(mainArr);
                     
-                    res.render("ProjectEmp", {allotArr, team, arr})
+                    res.render("ProjectEmp", {allotArr, team, arr, id})
                 }
             );
 
 
         });
 
-
+app.post("/role", function(req, res){
+    var secMaven = req.body.id;
+    User.findOne({_id: secMaven}, (err, foundUser) => {
+        foundUser.projectRole = "Security Maven";
+        foundUser.save();
+    });
+});
+  
 
 /*//////////////////////////////////////////////////////////////
 REGISTER
