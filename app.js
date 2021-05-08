@@ -13,7 +13,6 @@ app.use(express.static("public"));
 
 
 mongoose.connect(`mongodb+srv://${process.env.ADMIN}:${process.env.PASSWORD}@cluster0.cneb1.mongodb.net/ProjectDB?retryWrites=true&w=majority`, { useUnifiedTopology: true, useNewUrlParser: true });
-
 const projectSchema = new mongoose.Schema({
     projectId:String,
     projectName: String,

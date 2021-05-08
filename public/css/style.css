@@ -1,0 +1,135 @@
+body{
+    height: 80vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    margin-top: 15vh;
+    font-family: 'Poppins', sans-serif;
+}
+h1{
+    font-size: 46px;
+    margin: 0;
+}
+.mainContainer{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    height: 30vh;
+    width: 90vw;
+    background-color: white;
+}
+.title-container{
+    height: 100vh;
+    width: 60vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.login-container {
+    display: flex;
+    flex-direction: column;
+    text-align: end;
+    width: 35vw;
+}
+.btn-container{
+    /*text-align: center;*/
+    /*height: 13vh;*/
+    /*padding: 10px;*/
+    top: 126px;
+    left: 846px;
+    width: 467px;
+    height: 95px;
+    background: #DBDBDB 0% 0% no-repeat padding-box;
+    border: 1px solid #707070;
+    border-radius: 23px;
+    opacity: 1;
+}
+.btn{
+    text-align: center;
+    height: 100%;
+    width: 100%;
+    border-radius: 25px;
+    font-size: 20px;
+
+}
+.btn:hover{
+    background-color: darkslateblue;
+    color: white;
+}
+
+.creat-acc{
+    text-align: center;
+}
+p{
+    margin: 0;
+}
+
+#title{
+    position: absolute;
+    top: 30px;
+    left: 44px;
+    width: 74px;
+    height: 43px;
+    text-align: left;
+    font: normal normal 900 30px/25px Poppins;
+    letter-spacing: 3.6px;
+    color: #878181;
+    opacity: 1;
+}
+#description{
+    top: 30px;
+    left: 44px;
+    width: 300px;
+    height: 43px;
+    text-align: left;
+    font: normal normal 900 47px/25px "Roboto";
+    letter-spacing: 3.6px;
+    color: #000000;
+    opacity: 1;
+}
+#description2{
+    top: 162px;
+    left: 81px;
+    width: 670px;
+    height: 65px;
+    text-align: left;
+    font: normal normal 900 47px/25px "Roboto";
+    letter-spacing: 5.64px;
+    color: #000000;
+    opacity: 1;
+}
+#description3{
+    top: 218px;
+    left: 81px;
+    width: 152px;
+    height: 90px;
+    text-align: left;
+    font: normal normal 900 47px/25px Poppins;
+    letter-spacing: 5.64px;
+    color: #010101;
+    opacity: 1;
+}
+#extra{
+    top: 308px;
+    left: 218px;
+    width: 515px;
+    height: 28px;
+    text-align: left;
+    font: normal normal normal 20px/25px Poppins;
+    letter-spacing: 2.4px;
+    color: #878181;
+    opacity: 1;
+}
+.image-container{
+    position: absolute;
+    top: 418px;
+    left: 100px;
+    width: 425px;
+    height: 291px;
+    background: transparent url('images/undraw_Country_side_k696.png') 0% 0% no-repeat padding-box;
+    opacity: 1;
+    border: solid black;
+}
+
+
