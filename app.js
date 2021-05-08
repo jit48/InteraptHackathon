@@ -153,10 +153,7 @@ app.get("/projects/:projectId",(req,res)=>{
 
 
 /*
-
 REGISTER
-
-
 */
 
 app.get("/register",(req,res)=>{
@@ -179,6 +176,7 @@ app.get("/employees/:empId",(req,res)=>{
         if(err){
             console.log(err);
         }else{
+            console.log(foundUser);
             res.render("employee",{foundUser});
         }
     })
@@ -468,8 +466,8 @@ app.post("/createProject", async (req, res) => {
                     })
                 })
 
-                    console.log(allotArr);
-                    console.log(mainArr);
+                    // console.log(allotArr);
+                    // console.log(mainArr);
                     
                     res.render("ProjectEmp", {allotArr, team, arr})
                 }
@@ -481,9 +479,7 @@ app.post("/createProject", async (req, res) => {
 
 
 /*//////////////////////////////////////////////////////////////
-
 REGISTER
-
 ////////////////////////////////////////////////////////////////*/
 
 app.get("/register", (req, res) => {
@@ -577,9 +573,7 @@ app.get("/register", (req, res) => {
 
 
 /*//////////////////////////////////////////////////////////////
-
  PM-LOGIN
-
 ////////////////////////////////////////////////////////////////*/
 
 
@@ -619,9 +613,7 @@ app.post("/login",(req,res)=>{
 
 
 /*//////////////////////////////////////////////////////////////
-
  EMP-LOGIN
-
 ////////////////////////////////////////////////////////////////*/
 
 
