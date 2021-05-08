@@ -1,3 +1,107 @@
+*{
+    font-family: roboto;
+
+}
+.displayNone{
+  display: none;
+}
+.emplogout{
+   margin-top: 350px;
+   text-align: center;
+}
+.empSidenav {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #5b57ee;
+    overflow-x: hidden;
+    /* padding-top: 20px; */
+  }
+  .empSidenav h3{
+      font-size: 30px;
+      color: #ffffff;
+  }
+ .navElem{
+    margin-top: 50px;
+  }
+  .empSidenav a, h3{
+    padding: 6px 0px 6px 30px;
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 20px;
+    color: #ffffff;
+    display: block;
+  }
+  .empSidenav a{
+      padding-top: 20px;
+      padding-bottom: 20px;
+  }
+  .empSidenav a:hover {
+    color: #636265;
+    background-color: #f4f5f7;
+  }
+  
+  .empLandingContainer{
+    margin-left: 240px; 
+    font-size: 28px; 
+    background-color:#f4f5f7 ;
+  }
+  .empElements{
+      margin-left: 70px;
+      padding-top: 60px;
+  }
+  .empDetails h1{
+    font-size: 25px;;
+  }
+  .empDetails p{
+      display: flex;
+      font-size: 20px;
+      color: #5b57ee;
+  }
+  .empBio{
+      margin-top: 50px;
+      font-size: 20px;
+  }
+  .empTechSkill{
+      display: flex;
+      justify-content:left;
+      align-items: center;
+  }
+  .empTechSkill p{
+    margin-right: 5px;
+  }
+  .emp-btn-group .emp-button {
+    background-color: #f4f5f7;
+    border:none;
+    color: rgb(0, 0, 0);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    font-size: 15px;
+    width:250px;
+  }
+   
+  .emp-btn-group .emp-button:hover {
+    background-color: #5b57ee;
+    color:white;
+  }
+  @media screen and (max-height: 450px) {
+    .empSidenav {padding-top: 15px;}
+    .empSidenav a {font-size: 18px;}
+    .empSidenav h3, h4 {font-size: 20px;}
+  }
+
+  @media screen and (max-width: 750px) {
+    .empSidenav {padding-top: 15px;}
+    .empSidenav a {font-size: 18px;}
+    .empSidenav h3, h4 {font-size: 18px;}
+  }
 body{
     background-color: #f4f5f7;
     font-family: 'Raleway', sans-serif;
@@ -152,4 +256,12 @@ body{
 }
 .userDetails-role p {
     margin: 10px 20px;
+}
+
+.Create-Form{
+    margin-left: 250px;
+}
+
+.Create-Form h1 {
+    padding-top: 15px;
 }

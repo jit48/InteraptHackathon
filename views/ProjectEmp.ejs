@@ -12,7 +12,6 @@
         <div>
            <h1><%=element%></h1>
                 <%allotArr.forEach(user => {%>
-                    <%var score = 0;%>
                     <%if(user.role.toUpperCase() == element.toUpperCase()){%>
                         <div class="score-div">
                             <p><%=user.username%></p>
@@ -24,5 +23,18 @@
                 <% });%>
         </div>
     <% }); %>
-</body>
-</html>
+        <h2>Select Security Maven for your Team</h2>
+        <% allotArr.forEach(elem => { %>
+            <form action="/role" method="POST">
+            <p><%=elem.username%></p>
+            <input value="<%=elem._id%>" name="id">
+            <button type="submit">Select</button>
+            </form>
+        <% }) %>
+     
+
+   
+    <script src="js/Role.js"></script> --> 
+
+<%- include('partials/footer') -%>
+
