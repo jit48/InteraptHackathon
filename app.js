@@ -15,52 +15,50 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 
-
-
-app.use(
-    session({
-        secret: 'secret',
-        resave: false,
-        saveUninitialized: false,
-    })
-);
+app.use(session({secret: 'secret', resave: false, saveUninitialized: false}));
 
 app.use(passport.initialize());
 app.use(passport.session());
 
 
-
-
-mongoose.connect(`mongodb+srv://${process.env.ADMIN}:${process.env.PASSWORD}@cluster0.cneb1.mongodb.net/ProjectDB?retryWrites=true&w=majority`, { useUnifiedTopology: true, useNewUrlParser: true });
+mongoose.connect(`mongodb+srv://${
+    process.env.ADMIN
+}:${
+    process.env.PASSWORD
+}@cluster0.cneb1.mongodb.net/ProjectDB?retryWrites=true&w=majority`, {
+    useUnifiedTopology: true,
+    useNewUrlParser: true
+});
 
 const projectSchema = new mongoose.Schema({
-    projectId:String,
+    projectId: String,
     projectName: String,
     description:String,
     startDate:String,
     endDate:String,
     totalResources:Number,
     location:String,
+    isCompleted:Boolean,
 })
 const userSchema = new mongoose.Schema({
     fullname: String,
     username : String,
     password : String,
     role: String,
-    roleLevel:String,
-    projectRole:String,
+    roleLevel: String,
+    projectRole: String,
     vendor: String,
-    startDate:String,
-    gender:String,
+    startDate: String,
+    gender: String,
     skills: Array,
-    score:Number,
-    location:String,
+    score: Number,
+    location: String,
     project: {
-        projectId:String,
+        projectId: String,
         projectStartDate: String,
-        projectEndDate:String
+        projectEndDate: String
     },
-    transferrable:Boolean,
+    transferrable: Boolean
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -73,28 +71,208 @@ passport.deserializeUser(User.deserializeUser());
 
 const Project = mongoose.model("Project", projectSchema);
 
-
-
-const project = new Project({
-     projectId:"1f6aea75-fca3-4b2f-b87b-fb71b5c8e21a",
-    projectName: "Alpino Jalpino",
-    description:"This is a short project",
-    startDate:"2021-02-21",
-    endDate:"2021-12-03",
-    totalResources:3,
-    location:"AZ",
-})
-
-// project.save();
-
-
-
-
-
-app.get("/", function(req, res){
+//-----------------------------------------------------------------------------------
+//                                   HOME ROUTE
+//-----------------------------------------------------------------------------------
+app.get("/", function (req, res) {
     res.render("index");
 })
 
+
+// -------------------------------------------------------------------------------------
+//                                 RESOURCE ALLOCATION
+// -------------------------------------------------------------------------------------
+
+
+app.get("/createProject", function (req, res) {
+    res.render("createProject");
+});
+app.post("/createProject", async (req, res) => {
+    let arr = [];
+    let team = [];
+    let allotArr = [];
+    let SEngrNum, MEngrNum, JEngrNum, SuxNum, MuxNum, JuxNum;
+    const {
+        Mainframe,
+        JAVA,
+        ANGULAR,
+        IBM,
+        NET,
+        cloud,
+        SDE,
+        Designer,
+        location,
+        projectName,
+        projectDescription,
+        startDate,
+        endDate,
+        resources,
+        SEngr,
+        MEngr,
+        JEngr,
+        SUX,
+        MUX,
+        JUX
+    } = req.body;
+    if (Mainframe != undefined) {
+        arr.push(Mainframe);
+       }
+    if (JAVA != undefined) {
+        arr.push(JAVA);
+    }
+    if (ANGULAR != undefined) {
+        arr.push(ANGULAR);
+    }
+    if (IBM != undefined) {
+        arr.push(IBM);
+    }
+    if (NET != undefined) {
+        arr.push(NET);
+    }
+    if (cloud != undefined) {
+        arr.push(cloud);
+    }
+    if (SDE != undefined) {
+        team.push(SDE);
+    }
+    if (Designer != undefined) {
+        team.push(Designer);
+    }
+    if(SEngr != undefined){
+        SEngrNum = SEngr;
+    }
+    if(MEngr != undefined){
+        MEngrNum = MEngr;
+    }
+    if(JEngr != undefined){
+        JEngrNum = JEngr;
+    }
+    if(SUX != undefined){
+        SuxNum = SUX;
+    }
+    if(MUX != undefined){
+        MuxNum = MUX;
+    }
+    if(JUX != undefined){
+        JuxNum = JUX; 
+    }
+    // console.log(req.body);
+    console.log(arr);
+
+    console.log(team);
+    // const skillReq = req.body.skill;
+    var id = uuid();
+    const project = new Project({
+        projectId: id,
+        projectName,
+        description: projectDescription,
+        startDate,
+        endDate,
+        totalResources: resources,
+        location
+    });
+    project.save();
+    User.find({skills: {$in: arr}, location: location.toUpperCase(), "project.projectEndDate":{$lte: startDate}}, (err, foundUsers) => {
+        if (err) {
+            console.log(err);
+        } else {
+                var mainArr = [];
+                arr.forEach(Element => {
+                    foundUsers.forEach(user => {
+                        if (user.skills.includes(Element)) {
+                            user.score += 1;
+                        }
+                    })
+                })
+                function compare(a, b) {
+                    if (a.score > b.score) {
+                        return -1;
+                    }
+                    if (a.score<b.score ){
+                      return 1;
+                    }
+                    return 0;
+                  }
+                  
+                  foundUsers.sort( compare );
+            }       
+                team.forEach(team => {
+                        foundUsers.forEach(user => {
+                            if (user.role.toUpperCase() == team.toUpperCase()) {
+                                mainArr.push(user);
+                            }
+
+                        })
+                    })
+                    
+                team.forEach(team => {
+                    mainArr.forEach(elem => {
+                        if(team.toUpperCase() == elem.role.toUpperCase()){
+                            if(team.toUpperCase() == "ENGR"){
+                                if(elem.roleLevel == "senior" && SEngrNum!=0){
+                                    allotArr.push(elem);
+                                    elem.projectId = id;
+                                    elem.projectStartDate = startDate;
+                                    elem.projectEndDate = endDate;
+                                    elem.save();
+                                    SEngrNum--;
+                                }
+                                else if(elem.roleLevel == "mid" && MEngrNum!=0){
+                                    allotArr.push(elem);
+                                    elem.projectId = id;
+                                    elem.projectStartDate = startDate;
+                                    elem.projectEndDate = endDate;
+                                    elem.save();
+                                    MEngrNum--
+                                }
+                                else if(elem.roleLevel == "junior" && JEngrNum!=0){
+                                    allotArr.push(elem);
+                                    elem.projectId = id;
+                                    elem.projectStartDate = startDate;
+                                    elem.projectEndDate = endDate;
+                                    elem.save();
+                                    JEngrNum--;
+                                }
+                            }
+                            else if(team == "UX"){
+                                if(elem.roleLevel == "senior" && SuxNum!=0){
+                                    allotArr.push(elem);
+                                    elem.projectId = id;
+                                    elem.projectStartDate = startDate;
+                                    elem.projectEndDate = endDate;
+                                    elem.save();
+                                    SuxNum--;
+                                }
+                                else if(elem.roleLevel == "mid" && MuxNum!=0){
+                                    allotArr.push(elem);
+                                    elem.projectId = id;
+                                    elem.projectStartDate = startDate;
+                                    elem.projectEndDate = endDate;
+                                    elem.save();
+                                    MuxNum--
+                                }
+                                else if(elem.roleLevel == "junior" && JuxNum!=0){
+                                    allotArr.push(elem);
+                                    elem.projectId = id;
+                                    elem.projectStartDate = startDate;
+                                    elem.projectEndDate = endDate;
+                                    elem.save();
+                                    JuxNum--;
+                                }
+                            }
+                        }
+                    })
+                })
+
+                    // console.log(allotArr);
+                    // console.log(mainArr);
+                    
+                    res.render("ProjectEmp", {allotArr, team, arr})
+                }
+            );
+
+
+        });
 
 
 
@@ -104,149 +282,94 @@ REGISTER
 
 ////////////////////////////////////////////////////////////////*/
 
+app.get("/register", (req, res) => {
+            res.render('register');
+        });
 
-app.get("/register",(req,res)=>{
-    res.render('register')
-})
-
-app.post("/empRegister",function(req,res){
-    // console.log(req.body);
-    const {
-    fullname,
-    username,
-    password,
-    location,
-    startDate,
-    gender,
-    vendor,
-    role,
-    rolelevel,
-    Prole,
-    cloud,
-    mainframe,
-    angular,
-    java,
-    NET,
-    IBM,
-    projectId,
-    projectStartDate,
-    projectEndDate,
-    transferrable,
-    }=req.body
-   let arr =[]
-    if(mainframe != undefined){
-    arr.push(mainframe);
-    }
-    if(java != undefined){
-        arr.push(java);
-    }
-    if( angular != undefined){
-        arr.push(angular);
-    }
-    if(IBM != undefined){
-        arr.push(IBM);
-    }
-    if(NET != undefined){
-        arr.push(NET);
-    }
-    if(cloud != undefined){
-        arr.push(cloud);
-    }
-    // console.log(arr);
-       User.register(
-        {   fullname :fullname,
-            username : username,
-            role: role,
-            roleLevel:rolelevel,
-            projectRole:Prole,
-            vendor: vendor,
-            startDate:startDate,
-            gender:gender,
-            skills: arr,
-            score:0,
-            location:location,
-            project: {
-                projectId:projectId,
-                projectStartDate: projectStartDate,
-                projectEndDate:projectEndDate,
-            },
-            transferrable:transferrable,
-        },
-        password,
-        function (err, user) {
-            if (err) {
-                console.log(err);
-                res.redirect('/empRegister');
-            } else {
-                passport.authenticate('local')(req, res, function () {
-                    if(req.user.role.toUpperCase() == "PM"){                 
-                    res.redirect('/pmLanding'); }
-                    else{
-                        res.redirect('/empLanding');
-                    }
-                   
-                });
+        app.post("/empRegister", function (req, res) {
+            console.log(req.body);
+            const {
+                fullname,
+                username,
+                password,
+                location,
+                startDate,
+                gender,
+                vendor,
+                role,
+                rolelevel,
+                Prole,
+                cloud,
+                mainframe,
+                angular,
+                java,
+                NET,
+                IBM,
+                projectId,
+                projectStartDate,
+                projectEndDate,
+                transferrable
+            } = req.body
+            let arr = []
+            if (mainframe != undefined) {
+                arr.push(mainframe);
             }
-        }
-        )
-})
- 
-app.get("/pmLanding",(req,res)=>{
-    res.render('pmLanding')
-})
+            if (java != undefined) {
+                arr.push(java);
+            }
+            if (angular != undefined) {
+                arr.push(angular);
+            }
+            if (IBM != undefined) {
+                arr.push(IBM);
+            }
+            if (NET != undefined) {
+                arr.push(NET);
+            }
+            if (cloud != undefined) {
+                arr.push(cloud);
+            }
+
+            // console.log(arr);
+            User.register({
+                fullname: fullname,
+                username: username,
+                role: role,
+                roleLevel: rolelevel,
+                projectRole: Prole,
+                vendor: vendor,
+                startDate: startDate,
+                gender: gender,
+                skills: arr,
+                score: 0,
+                location: location,
+                project: {
+                    projectId: projectId,
+                    projectStartDate: projectStartDate,
+                    projectEndDate: projectEndDate
+                },
+                transferrable: transferrable
 
 
-/*=======================================================================
-                         Employee Landing 
-========================================================================*/
-app.get("/empLanding",function(req,res){ 
-    if(req.isAuthenticated()){
-        var techrole,level,gen;
-    // console.log(req.user);
-        let name = req.user.fullname;
-        let username = req.user.username;
-        let role = req.user.role;
-        let rolelevel = req.user.roleLevel;
-        let projectrole = req.user.projectrole;
-        let vendor = req.user.vendor;
-        let startdate = req.user.startDate;
-        let gender = req.user.gender;
-        let skill = req.user.skill;
-        let location = req.user.location;
-        let project = req.user.project;
-        let transfer=req.body.transferrable;
-        if(role.toUpperCase()=="ENGR"){
-            techrole="Engineer";
-        }
-        else if(role.toUpperCase()=="UX")
-        {
-            techrole="UX Developer";
-        }
+            }, password, function (err, user) {
+                if (err) {
+                    console.log(err);
+                    res.redirect('/empRegister');
+                } else {
+                    passport.authenticate('local')(req, res, function () {
+                        if (req.user.role.toUpperCase() == "PM") {
+                            res.redirect('/pmLanding');
+                        } else {
+                            res.redirect('/empLanding');
+                        }
 
-        if(rolelevel.toUpperCase()=="SENIOR")
-        {
-            level="Senior";
-        }
-        else if(rolelevel.toUpperCase()=="JUNIOR")
-        {
-            level="Junior";
-        }
-        else{
-            level="Intermediate";
-        }
+                    });
+                }
+            })
+        })
 
-        if(gender=="M"){
-            gen="Male"
-        }
-        else{
-            gen="Female"
-        }
-        res.render("empLanding",{passedname:name,username,techrole,level,projectrole,vendor,startdate,gen,skill,location,project,transfer});  
-     
-    }
-    else res.redirect("/empLogin");
-    
-})
+
+   
 
 
 /*//////////////////////////////////////////////////////////////
@@ -254,6 +377,9 @@ app.get("/empLanding",function(req,res){
  PM-LOGIN
 
 ////////////////////////////////////////////////////////////////*/
+
+
+
 
 app.get("/pmLogin",(req,res)=>{
     res.render('pmLogin')
@@ -272,7 +398,7 @@ app.post("/login",(req,res)=>{
         }
         
         else{
-            console.log(req.user)
+            // console.log(req.user)
             passport.authenticate('local',{failureRedirect: '/pmLogin'})(req,res,function(){
                 console.log(req.user);
                 if(req.user.role.toUpperCase()=="PM"){
@@ -284,6 +410,8 @@ app.post("/login",(req,res)=>{
     });
 
 });
+
+
 
 
 /*//////////////////////////////////////////////////////////////
@@ -310,9 +438,9 @@ app.post("/empLogin",(req,res)=>{
         }
         
         else{
-            console.log(req.user)
+            // console.log(req.user)
             passport.authenticate('local',{failureRedirect: '/empLogin'})(req,res,function(){
-                console.log(req.user);
+                // console.log(req.user);
                 if(req.user.role.toUpperCase()=="UX" || req.user.role.toUpperCase()=="ENGR" ){
                     res.redirect("/empLanding");
                 }
@@ -323,16 +451,92 @@ app.post("/empLogin",(req,res)=>{
 
 });
 
+    // -------------------------------------------------------------------
+    //                          LANDING ROUTES
+    // -------------------------------------------------------------------
 
 
+        
+        app.get("/pmLanding", (req, res) => {
+            res.render('pmLanding')
+        })
 
 
+    /*=======================================================================
+                            Employee Landing 
+    ========================================================================*/
+    app.get("/empLanding",function(req,res){ 
+        if(req.isAuthenticated()){
+            var techrole,level,gen;
+            let name = req.user.fullname;
+            let username = req.user.username;
+            let role = req.user.role;
+            let rolelevel = req.user.roleLevel;
+            let projectrole = req.user.projectrole;
+            let vendor = req.user.vendor;
+            let startdate = req.user.startDate;
+            let gender = req.user.gender;
+            let skill = req.user.skills;
+            let location = req.user.location;
+            let project = req.user.project;
+            let transfer=req.user.transferrable;
+            let projectid=project.projectId;
+         
 
+        var projname,projdesc,projStartDate,projEndDate,projloc; 
+            
+         
+            if(role.toUpperCase()=="ENGR"){
+                techrole="Engineer";
+            }
+            else if(role.toUpperCase()=="UX")
+            {
+                techrole="UX Developer";
+            }
 
+            if(rolelevel.toUpperCase()=="SENIOR")
+            {
+                level="Senior";
+            }
+            else if(rolelevel.toUpperCase()=="JUNIOR")
+            {
+                level="Junior";
+            }
+            else{
+                level="Mid";
+            }
 
-app.listen(3000 , ()=>{
-    console.log("server running at port 3000");
-});
+            if(gender=="M"){
+                gen="Male"
+            }
+            else{
+                gen="Female"
+            }
+              
+            Project.find({projectId:projectid},(err,foundproject)=>{
+                if(err){
+                    console.log(err);
+                }
+                else{
+                    // foundproject.forEach(item =>{
+                       
+                          projname=foundproject[0].projectName;
+                          projdesc=foundproject[0].description;
+                          projStartDate=foundproject[0].startDate;
+                          projEndDate=foundproject[0].endDate;
+                          projloc=foundproject[0].location;
+                          res.render("empLanding",{passedname:name,username,techrole,level,projectrole,vendor,startdate,gen,skill,location,project,transfer,projname,projdesc,projStartDate,projEndDate,projloc});
+                    // });
+                }
+            });
+        }
+        else res.redirect("/empLogin");     
+    })
 
+        // -------------------------------------------------------------------
+        //                          PORT
+        // -------------------------------------------------------------------
 
-
+        app.listen(3000, () => {
+            console.log("server running at port 3000");
+        });

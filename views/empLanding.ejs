@@ -9,23 +9,45 @@
 <body>
     <h1>
         Others landing
+        <h1><%=passedname%></h1>
     </h1>
 </body>
 </html> -->
 
 <%- include('partials/header') -%>
+
     <div>
         <%- include('partials/empNav') -%>
     </div>
     <div class="empLandingContainer">
-        <div >
-            <h1><%=passedname %></h1>
-            <p><%=location%></p>
-            <h4><%=level%>, <%= techrole %></h4>
-            <p>Gender : <%=gen%></p>
-            <p>Joining Date: <%=startdate %></p>
-           
-            <p>Technical Skills <%=skill%></p>
+        <div class="empElements">
+            <div class="empDetails">
+                <h1><%=passedname.toUpperCase() %></h1>
+                <p><%=level %>, <%= techrole %></p>
+            </div>
+            <hr>
+            <div class="empBio">
+                <p><b>Location :</b> <%=location %></p>
+                <p><b>Gender : </b><%=gen%></p>
+                <p><b>Joining Date: </b><%=startdate %></p>
+                <div class="empTechSkill">
+                    <p><b>Technical Skills  :</b></p>
+                    <% skill.forEach(elem =>{ %>
+                    <p> <%=elem%>,</p> 
+                    <%})%>
+                </div>
+                <button id="showProjDetails">Show Project Details</button>
+                <div id="empProjDetails">
+                    <p><b>Project Name : </b><%=projname%></p>
+                    <p><b>Description : </b><%=projdesc%></p>
+                    <p><b>Start Date : </b><%=projStartDate%></p>
+                    <p><b>End Date : </b><%=projEndDate%></p>
+                    <p><b>Location : </b><%=projloc%></p>
+                </div>
+            </div>
         </div>
     </div> 
+<script src="js/empLanding.js">
+
+</script>
 <%- include('partials/footer') -%>

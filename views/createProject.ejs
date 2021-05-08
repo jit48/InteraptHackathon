@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Project</title>
+</head>
+<body>
+    <h1>Create Project</h1>
+    <form action="/createProject" method="POST">
+        <div class="teams-div">
+            <label for="projectName">Project Name</label>
+            <input type="text" name="projectName" placeholder="Enter Project Name">
+            <br>
+            <br>
+            <label for="projectDescription">Project Description</label>
+            <textarea name="projectDescription" id="" cols="100" rows="10" placeholder="Description"></textarea>
+            <br>
+            <br>
+            <label for="location">Location</label>
+            <input type="text" name="location" placeholder="Enter Location">
+            <br>
+            <br>
+            <label for="startDate">Start Date</label>
+            <input type="date" name="startDate" id="startDate">
+            <br>
+            <br>
+            <label for="endDate">End Date</label>
+            <input type="date" name="endDate" id="endDate">
+            <br>
+            <br>
+            <div class="teams-div-sde">
+                <label>Select Required Teams</label>
+                <br>
+                <br>
+                <label for="SDE">Software Developer</label>
+                <input type="checkbox" name="SDE" id="SDE" value="ENGR">
+                <br>
+                <br>
+                <div  id="sde-checkbox" style="display: none;">
+                    <label>Skills Required</label><br><br>
+                    <label for="NodeJS">Mainframe</label>
+                    <input type="checkbox" name="Mainframe" id="" value="mainframe"><br><br>
+                    <label for="JAVA">JAVA</label>
+                    <input type="checkbox" name="JAVA" id="" value="java"><br><br>
+                    <label for="ANGULAR">ANGULAR</label>
+                    <input type="checkbox" name="ANGULAR" id="" value="angular"><br><br>
+                    <label for="IBM">IBM/WEBSPHERE</label>
+                    <input type="checkbox" name="IBM" id="" value="IBM"><br><br>
+                    <label for="SEngr">Number of Senior Resources Required</label>
+                    <input type="number" name="SEngr"><br><br>
+                    <label for="MEngr">Number of Medium Resources Required</label>
+                    <input type="number" name="MEngr"><br><br>
+                    <label for="JEngr">Number of Junior Resources Required</label>
+                    <input type="number" name="JEngr"><br><br>
+                </div>
+            </div>
+            <br>
+            <div class="teams-div-designer">
+                <label for="Designer">UX</label>
+                <input type="checkbox" name="Designer" id="FDE" value="UX"><br>
+                <div id="designer-checkbox" style="display: none;">
+                    <label>Skills Required</label><br><br>
+                    <label for="NET">.NET</label>
+                    <input type="checkbox" name="NET" id="" value="NET"><br><br>
+                    <label for="cloud">CLOUD</label>
+                    <input type="checkbox" name="cloud" id="" value="cloud"><br><br>
+                    <label for="SUX">Number of Senior Resources Required</label>
+                    <input type="number" name="SUX"><br><br>
+                    <label for="MUX">Number of Medium Resources Required</label>
+                    <input type="number" name="MUX"><br><br>
+                    <label for="JUX">Number of Junior Resources Required</label>
+                    <input type="number" name="JUX"><br><br>
+                </div>
+            </div>
+            <br>
+
+        </div>
+        <button type="submit">Create Project</button>
+    </form>
+    <script src="js/createProject.js"></script>
+</body>
+</html>
