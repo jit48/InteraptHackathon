@@ -41,6 +41,7 @@ const projectSchema = new mongoose.Schema({
     endDate:String,
     totalResources:Number,
     location:String,
+    isCompleted:Boolean,
 })
 const userSchema = new mongoose.Schema({
     fullname: String,
@@ -61,6 +62,7 @@ const userSchema = new mongoose.Schema({
         projectEndDate:String
     },
     transferrable:Boolean,
+
 });
 
 userSchema.plugin(passportLocalMongoose);
@@ -152,7 +154,7 @@ app.post("/empRegister",function(req,res){
     if(cloud != undefined){
         arr.push(cloud);
     }
-    console.log(arr);
+    // console.log(arr);
        User.register(
         {   fullname :fullname,
             username : username,
@@ -230,7 +232,7 @@ app.post("/login",(req,res)=>{
         }
         
         else{
-            console.log(req.user)
+            // console.log(req.user)
             passport.authenticate('local',{failureRedirect: '/pmLogin'})(req,res,function(){
                 console.log(req.user);
                 if(req.user.role.toUpperCase()=="PM"){
@@ -270,7 +272,7 @@ app.post("/empLogin",(req,res)=>{
         }
         
         else{
-            console.log(req.user)
+            // console.log(req.user)
             passport.authenticate('local',{failureRedirect: '/empLogin'})(req,res,function(){
                 console.log(req.user);
                 if(req.user.role.toUpperCase()=="UX" || req.user.role.toUpperCase()=="ENGR" ){
@@ -282,6 +284,8 @@ app.post("/empLogin",(req,res)=>{
     });
 
 });
+
+
 
 
 
