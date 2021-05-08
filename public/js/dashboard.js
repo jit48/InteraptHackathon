@@ -25,11 +25,7 @@ empSearch.addEventListener('click', ()=>{
             const regex = new RegExp(`^${searchText.toString()}`,'gi');
             return d.username.match(regex) ||  d._id.match(regex) || d.location.match(regex) || d.vendor.match(regex) 
         })
-<<<<<<< HEAD
         Results.classList.add('displayNone');
-=======
-        //activeResults.classList.add('displayNone');
->>>>>>> 66b3635264c443b301a1dd4218dcaf1dd6e15e3a
         outputHtml(matches);
     }
     
@@ -52,11 +48,7 @@ projSearch.addEventListener('click', ()=>{
             return d.projectName.match(regex) || d.projectId.match(regex) || d.location.match(regex)
         })
         console.log(matches);
-<<<<<<< HEAD
         Results.classList.add('displayNone');
-=======
-        //activeResults.classList.add('displayNone');
->>>>>>> 66b3635264c443b301a1dd4218dcaf1dd6e15e3a
         outputHtmlProject(matches);
     }
     search.addEventListener('input', ()=>{
@@ -88,7 +80,7 @@ function outputHtml(matches){
                     <p>${match.role}</p>
                 </div>
                 <div class="button">
-                    <a href="/projects/${match._id}">explore</a>
+                    <a href="/employees/${match._id}">explore</a>
                 </div>
             </div>`
         )).join('');
@@ -154,7 +146,7 @@ async function empData(){
             <p>${d.role}</p>
         </div>
         <div class="button">
-            <a href="/projects/${d.Id}">explore</a>
+            <a href="/employees/${d._id}">explore</a>
         </div>
     </div>`
 )).join('');
