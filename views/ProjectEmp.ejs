@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <% team.forEach(element => { %>
+        <div>
+           <h1><%=element%></h1>
+                <%allotArr.forEach(user => {%>
+                    <%var score = 0;%>
+                    <%if(user.role.toUpperCase() == element.toUpperCase()){%>
+                        <div class="score-div">
+                            <p><%=user.username%></p>
+                            <p><%= user.score %></p>
+                            <p><%=user.projectId%></p>
+                            <p><%=user.roleLevel%></p> 
+                        </div>
+                    <%}%>
+                <% });%>
+        </div>
+    <% }); %>
+</body>
+</html>
