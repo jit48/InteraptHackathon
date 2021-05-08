@@ -42,6 +42,27 @@ app.get("/", function(req, res){
     res.render("index");
 })
 
+/*=======================================================================
+                         Employee Landing 
+========================================================================*/
+app.get("/employeeLanding",function(req,res){
+    
+    res.render("employeeLanding")
+})
+
+
+
+
+
+
+
+
+
+
+
 app.listen(3000 , ()=>{
     console.log("server running at port 3000");
 });
+
+
+

@@ -1,0 +1,46 @@
+
+.empSidenav {
+    height: 100%;
+    width: 250px;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+  
+  .empSidenav a, h3, h4{
+    padding: 6px 8px 6px 16px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #6e6e6e;
+    display: block;
+  }
+  
+  .empSidenav a:hover {
+    color: #636265;
+    background-color: #f4f5f7;
+  }
+  
+  .empLandingContainer{
+    margin-left: 250px; /* Same as the width of the sidenav */
+    font-size: 28px; /* Increased text to enable scrolling */
+    padding: 0px 10px;
+    background-color:#f4f5f7 ;
+    height: 100vh;
+  }
+  
+  
+  @media screen and (max-height: 450px) {
+    .empSidenav {padding-top: 15px;}
+    .empSidenav a {font-size: 18px;}
+    .empSidenav h3, h4 {font-size: 20px;}
+  }
+
+  @media screen and (max-width: 750px) {
+    .empSidenav {padding-top: 15px;}
+    .empSidenav a {font-size: 18px;}
+    .empSidenav h3, h4 {font-size: 18px;}
+  }
