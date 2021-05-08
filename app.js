@@ -36,7 +36,7 @@ const project = new Project({
     location:"AZ",
 })
 
-project.save();
+//project.save();
 
 app.get("/", function(req, res){
     res.render("index");
