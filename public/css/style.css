@@ -5,6 +5,7 @@ body{
     justify-content: center;
     margin-top: 15vh;
     background-color: cornsilk;
+    font-family: 'Poppins', sans-serif;
 }
 h1{
     font-size: 46px;
@@ -63,6 +64,9 @@ p{
     color: gray;
     position: absolute;
     left: 7%;
+}
+#extra{
+    text-align: center;
 }
 img{
     height: 300px;
