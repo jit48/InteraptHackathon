@@ -176,7 +176,7 @@ app.get("/employees/:empId",(req,res)=>{
         if(err){
             console.log(err);
         }else{
-            console.log(foundUser);
+            // console.log(foundUser);
             res.render("employee",{foundUser});
         }
     })
@@ -186,11 +186,6 @@ app.get("/employees/:empId",(req,res)=>{
 // -------------------------------------------------------------------------------------
 //                                 RESOURCE ALLOCATION
 // -------------------------------------------------------------------------------------
-
-
-// app.get("/createProject", function (req, res) {
-//     res.render("createProject");
-// });
 
 app.get("/createProject", function (req, res) {
     if(req.isAuthenticated()){
@@ -281,7 +276,7 @@ app.post("/createProject", async (req, res) => {
     // const skillReq = req.body.skill;
     var id = uuid();
     const project = new Project({
-        projectId: id,
+        projectId:id,
         projectName,
         description: projectDescription,
         startDate,
@@ -665,18 +660,88 @@ app.post("/empLogin",(req,res)=>{
         })
 
 
-        app.get("/empLanding",function(req,res){ 
-            let name;
-            if(req.isAuthenticated()){
-                console.log(req.user);
-                name = req.user.username;
-                console.log(name);
-                res.render("empLanding",{passedname:name});    
-            }
+        // app.get("/empLanding",function(req,res){ 
+        //     let name;
+        //     if(req.isAuthenticated()){
+        //         console.log(req.user);
+        //         name = req.user.username;
+        //         console.log(name);
+        //         res.render("empLanding",{passedname:name});    
+        //     }
             
+        // })
+   // -------------------------------------------------------------------
+    //                        Employee  LANDING ROUTES
+    // -------------------------------------------------------------------
+        app.get("/empLanding",function(req,res){ 
+            if(req.isAuthenticated()){
+                var techrole,level,gen;
+                let name = req.user.fullname;
+                let username = req.user.username;
+                let role = req.user.role;
+                let rolelevel = req.user.roleLevel;
+                let projectrole = req.user.projectrole;
+                let vendor = req.user.vendor;
+                let startdate = req.user.startDate;
+                let gender = req.user.gender;
+                let skill = req.user.skills;
+                let location = req.user.location;
+                // let project = req.user.project[0];
+                let transfer=req.user.transferrable;
+                // let projectid=project.projectId;
+             
+    
+                // var projname,projdesc,projStartDate,projEndDate,projloc; 
+                
+             
+                if(role.toUpperCase()=="ENGR"){
+                    techrole="Engineer";
+                }
+                else if(role.toUpperCase()=="UX")
+                {
+                    techrole="UX Developer";
+                }
+    
+                if(rolelevel.toUpperCase()=="SENIOR")
+                {
+                    level="Senior";
+                }
+                else if(rolelevel.toUpperCase()=="JUNIOR")
+                {
+                    level="Junior";
+                }
+                else{
+                    level="Mid";
+                }
+    
+                if(gender=="M"){
+                    gen="Male"
+                }
+                else{
+                    gen="Female"
+                }
+                  
+                // Project.find({projectId:projectid},(err,foundproject)=>{
+                //     if(err){
+                //         console.log(err);
+                //     }
+                //     else{
+                //         // foundproject.forEach(item =>{
+                           
+                //               projname=foundproject[0].projectName;
+                //               projdesc=foundproject[0].description;
+                //               projStartDate=foundproject[0].startDate;
+                //               projEndDate=foundproject[0].endDate;
+                //               projloc=foundproject[0].location;
+                            
+                //         // });
+                //     }
+                // });
+
+                res.render("empLanding",{passedname:name,username,techrole,level,projectrole,vendor,startdate,gen,skill,location,transfer});
+            }
+            else res.redirect("/empLogin");     
         })
-
-
         // -------------------------------------------------------------------
         //                          PORT
         // -------------------------------------------------------------------

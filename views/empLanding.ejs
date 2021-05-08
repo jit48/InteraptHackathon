@@ -1,15 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>
-        Others landing
-        <h1><%=passedname%></h1>
-    </h1>
-</body>
-</html>
+<%- include('partials/header') -%>
+
+    <div>
+        <%- include('partials/empNav') -%>
+    </div>
+    <div class="empLandingContainer">
+        <div class="empElements">
+            <div class="empDetails">
+                <h1><%=passedname.toUpperCase() %></h1>
+                <p><%=level %>, <%= techrole %></p>
+            </div>
+            <hr>
+            <div class="empBio">
+                <p><b>Location :         </b> <%=location %></p>
+                <p><b>Gender :          </b><%=gen%></p>
+                <p><b>Joining Date:          </b><%=startdate %></p>
+                <div class="empTechSkill">
+                    <p><b>Technical Skills :           </b></p>
+                    <% skill.forEach(elem =>{ %>
+                    <p> <%=elem%>,</p> 
+                    <%})%>
+                </div>
+                <div class="emp-btn-group">
+                    <button class="emp-button" id="showProjDetails">Current Project Details</button>
+                    <button class="emp-button" id="showProjDetails">Completed Projects Details</button>
+                </div>
+            </div>
+        </div>
+    </div> 
+<script src="js/empLanding.js">
+
+</script>
+<%- include('partials/footer') -%>
