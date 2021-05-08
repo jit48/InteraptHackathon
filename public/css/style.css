@@ -4,7 +4,7 @@ body{
     display: flex;
     justify-content: center;
     margin-top: 15vh;
-    background-color: cornsilk;
+    background-color: darkslateblue;
     font-family: 'Poppins', sans-serif;
 }
 h1{
@@ -18,7 +18,7 @@ h1{
     align-items: center;
     height: 80vh;
     width: 90vw;
-    border: solid thin black;
+    border: solid black;
     background-color: white;
 }
 .title-container{
@@ -48,7 +48,7 @@ h1{
 
 }
 .btn:hover{
-    background-color: blue;
+    background-color: darkslateblue;
     color: white;
 }
 
@@ -67,6 +67,7 @@ p{
 }
 #extra{
     text-align: center;
+    color: gray;
 }
 img{
     height: 300px;
