@@ -43,6 +43,7 @@ const projectSchema = new mongoose.Schema({
     location:String,
 })
 const userSchema = new mongoose.Schema({
+    fullname: String,
     username : String,
     password : String,
     role: String,
@@ -95,12 +96,14 @@ app.get("/", function(req, res){
 })
 
 
-/*
+
+
+/*//////////////////////////////////////////////////////////////
 
 REGISTER
 
+////////////////////////////////////////////////////////////////*/
 
-*/
 
 app.get("/register",(req,res)=>{
     res.render('register')
@@ -109,6 +112,7 @@ app.get("/register",(req,res)=>{
 app.post("/empRegister",function(req,res){
     // console.log(req.body);
     const {
+    fullname,
     username,
     password,
     location,
@@ -150,7 +154,7 @@ app.post("/empRegister",function(req,res){
     }
     // console.log(arr);
        User.register(
-        {
+        {   fullname :fullname,
             username : username,
             role: role,
             roleLevel:rolelevel,
@@ -197,11 +201,12 @@ app.get("/pmLanding",(req,res)=>{
 ========================================================================*/
 app.get("/empLanding",function(req,res){ 
     if(req.isAuthenticated()){
-        console.log(req.user);
-        let name = req.user.username;
+        var techrole,level,gen;
+    // console.log(req.user);
+        let name = req.user.fullname;
         let username = req.user.username;
         let role = req.user.role;
-        let rolelevel = req.user.rolelevel;
+        let rolelevel = req.user.roleLevel;
         let projectrole = req.user.projectrole;
         let vendor = req.user.vendor;
         let startdate = req.user.startDate;
@@ -210,12 +215,116 @@ app.get("/empLanding",function(req,res){
         let location = req.user.location;
         let project = req.user.project;
         let transfer=req.body.transferrable;
-        console.log(name);
-        res.render("empLanding",{passedname:name,username,role,rolelevel,projectrole,vendor,startdate,gender,skill,location,project,transfer});    
+        if(role.toUpperCase()=="ENGR"){
+            techrole="Engineer";
+        }
+        else if(role.toUpperCase()=="UX")
+        {
+            techrole="UX Developer";
+        }
+
+        if(rolelevel.toUpperCase()=="SENIOR")
+        {
+            level="Senior";
+        }
+        else if(rolelevel.toUpperCase()=="JUNIOR")
+        {
+            level="Junior";
+        }
+        else{
+            level="Intermediate";
+        }
+
+        if(gender=="M"){
+            gen="Male"
+        }
+        else{
+            gen="Female"
+        }
+        res.render("empLanding",{passedname:name,username,techrole,level,projectrole,vendor,startdate,gen,skill,location,project,transfer});  
+     
     }
-    else res.redirect("/");
+    else res.redirect("/empLogin");
     
 })
+
+
+/*//////////////////////////////////////////////////////////////
+
+ PM-LOGIN
+
+////////////////////////////////////////////////////////////////*/
+
+app.get("/pmLogin",(req,res)=>{
+    res.render('pmLogin')
+})
+
+
+app.post("/login",(req,res)=>{
+    const user = new User({
+        username: req.body.username,
+        password: req.body.password
+    });
+
+    req.login(user,function(err){
+        if(err){
+            console.log(err);
+        }
+        
+        else{
+            console.log(req.user)
+            passport.authenticate('local',{failureRedirect: '/pmLogin'})(req,res,function(){
+                console.log(req.user);
+                if(req.user.role.toUpperCase()=="PM"){
+                    res.redirect("/pmLanding");
+                }
+            });
+                
+         }
+    });
+
+});
+
+
+/*//////////////////////////////////////////////////////////////
+
+ EMP-LOGIN
+
+////////////////////////////////////////////////////////////////*/
+
+
+app.get("/empLogin",(req,res)=>{
+    res.render('empLogin')
+})
+
+
+app.post("/empLogin",(req,res)=>{
+    const user = new User({
+        username: req.body.username,
+        password: req.body.password
+    });
+
+    req.login(user,function(err){
+        if(err){
+            console.log(err);
+        }
+        
+        else{
+            console.log(req.user)
+            passport.authenticate('local',{failureRedirect: '/empLogin'})(req,res,function(){
+                console.log(req.user);
+                if(req.user.role.toUpperCase()=="UX" || req.user.role.toUpperCase()=="ENGR" ){
+                    res.redirect("/empLanding");
+                }
+            });
+                
+         }
+    });
+
+});
+
+
+
 
 
 

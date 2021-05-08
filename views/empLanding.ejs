@@ -19,7 +19,13 @@
     </div>
     <div class="empLandingContainer">
         <div >
-            <h1>Hello employee <%=passedname %></h1>
+            <h1><%=passedname %></h1>
+            <p><%=location%></p>
+            <h4><%=level%>, <%= techrole %></h4>
+            <p>Gender : <%=gen%></p>
+            <p>Joining Date: <%=startdate %></p>
+           
+            <p>Technical Skills <%=skill%></p>
         </div>
     </div> 
 <%- include('partials/footer') -%>
