@@ -4,6 +4,11 @@ const projSearch = document.getElementById('projSearch');
 const projResults = document.getElementById('projResults');
 const empResults = document.getElementById('empResults');
 const Results = document.getElementById('Results');
+// const activeResults = document.getElementById('activeResults');
+// const empResults_one = document.getElementById('empResults-one');
+// const projResults_one = document.getElementById('projResults-one');
+const activeProjects = document.getElementById('activeProjects');
+const employees = document.getElementById('Employees');
 let searchText = search.value;
 window.addEventListener('load',()=>{
     data();
@@ -13,28 +18,32 @@ window.addEventListener('load',()=>{
 //     search.classList.toggle('extendWidth');
 // })
 
-// empSearch.addEventListener('click', ()=>{
-//     empResults.classList.remove('displayNone')
-//     projResults.classList.add('displayNone')
-//     empData();
-//     matches = [];
-//     async function getEmpData(searchText){
-//         const res = await fetch('http://localhost:3000/employees');
-//         const data = await res.json();
-//         let matches = data.filter(d => {
-//             const regex = new RegExp(`^${searchText.toString()}`,'gi');
-//             return d.firstName.match(regex) ||  d._id.match(regex) || d.location.match(regex) || d.vendor.match(regex) 
-//         })
-//         Results.classList.add('displayNone');
-//         outputHtml(matches);
-//     }
+empSearch.addEventListener('click', ()=>{
+    activeProjects.classList.add('displayNone')
+    employees.classList.remove('displayNone')
+    empResults.classList.remove('displayNone')
+    projResults.classList.add('displayNone')
+    empData();
+    matches = [];
+    async function getEmpData(searchText){
+        const res = await fetch('http://localhost:3000/employees');
+        const data = await res.json();
+        let matches = data.filter(d => {
+            const regex = new RegExp(`^${searchText.toString()}`,'gi');
+            return d.username.match(regex) ||  d._id.match(regex) || d.location.match(regex) || d.vendor.match(regex) 
+        })
+        activeResults.classList.add('displayNone');
+        outputHtml(matches);
+    }
     
-//     search.addEventListener('input', ()=>{
-//         getEmpData(search.value)});
+    search.addEventListener('input', ()=>{
+        getEmpData(search.value)});
 
-// })
+})
 
 projSearch.addEventListener('click', ()=>{
+    activeProjects.classList.remove('displayNone')
+    employees.classList.add('displayNone')
     projResults.classList.remove('displayNone');
     empResults.classList.add('displayNone');
     data();
@@ -48,7 +57,7 @@ projSearch.addEventListener('click', ()=>{
             return d.projectName.match(regex) || d.projectId.match(regex) || d.location.match(regex)
         })
         console.log(matches);
-        Results.classList.add('displayNone');
+        activeResults.classList.add('displayNone');
         outputHtmlProject(matches);
     }
     search.addEventListener('input', ()=>{
@@ -68,28 +77,28 @@ projSearch.addEventListener('click', ()=>{
 })
 
 
-// function outputHtml(matches){
-//     if(matches.length > 0){
-//         const html = matches.map(match => (
-//             `<div class="projectCard">
-//                 <div class="projectDetails">
-//                     <p>${match.firstName}</p>
-//                     <p>${match.location}</p>
-//                 </div>
-//                 <div class="projectStartDate">
-//                     <p>${match.role}</p>
-//                 </div>
-//                 <div class="button">
-//                     <a href="/projects/${match.projectId}">explore</a>
-//                 </div>
-//             </div>`
-//         )).join('');
-//         empResults.innerHTML = html;
-//     }else{
-//         const html = '';
-//         empResults.innerHTML = html;
-//     }
-// }
+function outputHtml(matches){
+    if(matches.length > 0){
+        const html = matches.map(match => (
+            `<div class="projectCard">
+                <div class="projectDetails">
+                    <p>${match.username}</p>
+                    <p>${match.location}</p>
+                </div>
+                <div class="projectStartDate">
+                    <p>${match.role}</p>
+                </div>
+                <div class="button">
+                    <a href="/projects/${match._id}">explore</a>
+                </div>
+            </div>`
+        )).join('');
+        empResults.innerHTML = html;
+    }else{
+        const html = '';
+        empResults.innerHTML = html;
+    }
+}
 function outputHtmlProject(matches){
     if(matches.length > 0){
         const html = matches.map(match => (
@@ -113,8 +122,9 @@ function outputHtmlProject(matches){
     }
 }
 async function data(){
+    employees.classList.add('displayNone');
     const res = await fetch('http://localhost:3000/projectData');
-    const data = await res.json();
+    let data = await res.json();
     console.log(data);
     const html = data.map(d => (
         `<div class="projectCard">
@@ -132,23 +142,24 @@ async function data(){
     )).join('');
         Results.innerHTML = html
 }
-// async function empData(){
-//     const res = await fetch('http://localhost:3000/employees');
-//     const data = await res.json();
-//     console.log(data);
-//     const html = data.map(d => (
-//         `<div class="projectCard">
-//         <div class="projectDetails">
-//             <p>${d.firstName}</p>
-//             <p>${d.location}</p>
-//         </div>
-//         <div class="projectStartDate">
-//             <p>${d.role}</p>
-//         </div>
-//         <div class="button">
-//             <a href="/projects/${d.projectId}">explore</a>
-//         </div>
-//     </div>`
-// )).join('');
-//     Results.innerHTML = html
-// }
+async function empData(){
+    activeProjects.classList.add('displayNone');
+    const res = await fetch('http://localhost:3000/employees');
+    const data = await res.json();
+    console.log(data);
+    const html = data.map(d => (
+        `<div class="projectCard">
+        <div class="projectDetails">
+            <p>${d.username}</p>
+            <p>${d.location}</p>
+        </div>
+        <div class="projectStartDate">
+            <p>${d.role}</p>
+        </div>
+        <div class="button">
+            <a href="/employees/${d._id}">explore</a>
+        </div>
+    </div>`
+)).join('');
+    Results.innerHTML = html
+}

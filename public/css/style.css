@@ -2,8 +2,18 @@ body{
     background-color: #f4f5f7;
     font-family: 'Raleway', sans-serif;
 }
+.addMargin{
+    margin: 10px 20px
+}
+.makeFlex{
+    display: flex;
+}
+.addPadding-right{
+    padding-left: 10px;
+}
 .navbar{
     width:100vw;
+    padding-right:60px;
     height: 10vh;
     display: flex;
     justify-content: flex-end;
@@ -86,4 +96,60 @@ body{
 .button a{
     text-decoration: none;
     color: white;
+}
+.projectHeader{
+    padding: 30px 10px ;
+    border-radius: 5px;
+    background-color: #ffff;
+}
+.projectHeader-header{
+    margin: 20px 0 ;
+    padding: 40px 10px ;
+    border-radius: 5px;
+    background-color: #ffff;
+}
+.projectHeader p{
+ text-align: justify;
+}
+.projectOtherDetails{
+    display: flex;
+}
+
+.empSpecificProjDetails{
+    margin: 0px 40px;
+}
+.projEmployees{
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.userDetails{
+    padding: 20px;
+    background-color: #ffff;
+    border-radius: 5px;
+}
+.userDetails-skills{
+    display: flex;
+}
+.userDetails-skills p{
+    margin: 10px 20px;
+}
+
+.userDetails-details h1{
+    font-size: 3rem;
+    margin: 0 20px;
+}
+
+.userDetails-details p {
+    margin: 10px 20px;
+
+}
+.userDetails-role{
+    display: flex;
+}
+.userDetails-role p {
+    margin: 10px 20px;
 }

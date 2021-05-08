@@ -41,6 +41,7 @@ const projectSchema = new mongoose.Schema({
     endDate:String,
     totalResources:Number,
     location:String,
+    isCompleted:Boolean,
 })
 const userSchema = new mongoose.Schema({
     username : String,
@@ -111,14 +112,33 @@ app.get("/projectData",(req,res)=>{
 
 app.get("/projects/:projectId",(req,res)=>{
     const reqProj = req.params.projectId;
-    User.find({projectId: reqProj},(err,foundProject)=>{
+    let arr = [];
+    let engineers = [];
+    let designers = [];
+    Project.find({projectId: reqProj} , (err,foundProject)=>{
         if(err){
             console.log(err);
         }else{
-            res.render("project",{foundProject})
+             arr = foundProject;
         }
+    }).then(()=>{
+        User.find({"project.projectId": reqProj},(err,foundUsers)=>{
+            if(err){
+                console.log(err);
+            }else{
+                foundUsers.forEach(user => {
+                    if(user.role == 'engr'){
+                        engineers.push(user);
+                    }else if(user.role == 'UX'){
+                        designers.push(user);
+                    }
+                })
+                res.render("project",{foundUsers,arr,engineers,designers})
+            }
+        })
     })
-})
+    })
+
 
 
 
@@ -131,6 +151,27 @@ REGISTER
 
 app.get("/register",(req,res)=>{
     res.render('register')
+})
+
+app.get("/employees",(req,res)=>{
+    User.find({},(err,foundUsers)=>{
+        if(err){
+            console.log(err);
+        }else{
+            res.json(foundUsers);
+        }
+    })
+})
+
+app.get("/employees/:empId",(req,res)=>{
+    const reqEmployee = req.params.empId;
+    User.find({_id: reqEmployee},(err,foundUser)=>{
+        if(err){
+            console.log(err);
+        }else{
+            res.render("employee",{foundUser});
+        }
+    })
 })
 
 app.post("/empRegister",function(req,res){
