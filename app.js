@@ -4,12 +4,31 @@ const bodyParser = require('body-parser');
 const uuid = require('uuid').v4;
 const ejs = require('ejs');
 const mongoose = require('mongoose');
+const passport = require('passport');
+const session = require('express-session');
+const passportLocalMongoose = require('passport-local-mongoose');
 
 
 const app = express();
 app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
+
+
+
+
+app.use(
+    session({
+        secret: 'secret',
+        resave: false,
+        saveUninitialized: false,
+    })
+);
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
 
 
 mongoose.connect(`mongodb+srv://${process.env.ADMIN}:${process.env.PASSWORD}@cluster0.cneb1.mongodb.net/ProjectDB?retryWrites=true&w=majority`, { useUnifiedTopology: true, useNewUrlParser: true });
@@ -24,7 +43,8 @@ const projectSchema = new mongoose.Schema({
     location:String,
 })
 const userSchema = new mongoose.Schema({
-    firstName : String,
+    username : String,
+    password : String,
     role: String,
     roleLevel:String,
     projectRole:String,
@@ -39,11 +59,19 @@ const userSchema = new mongoose.Schema({
         projectStartDate: String,
         projectEndDate:String
     },
-    transferable:Boolean,
+    transferrable:Boolean,
 });
 
-const Project = mongoose.model("Project", projectSchema);
+userSchema.plugin(passportLocalMongoose);
+
 const User = mongoose.model("User", userSchema);
+passport.use(User.createStrategy())
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+
+const Project = mongoose.model("Project", projectSchema);
+
 
 
 // const project = new Project({
@@ -103,17 +131,7 @@ app.post("/createProject" , async (req,res)=>{
     }
     if( ANGULAR != undefined){
         arr.push(ANGULAR);
-    }
-    if(IBM != undefined){
-        arr.push(IBM);
-    }
-    if(NET != undefined){
-        arr.push(NET);
-    }
-    if(cloud != undefined){
-        arr.push(cloud);
-    }
-    if(SDE != undefined){
+    }if(SDE != undefined){
         team.push(SDE);
     }
     if(Designer != undefined){
@@ -180,11 +198,125 @@ project.save();
 
              
     });
+
+
+
+/*
+
+REGISTER
+
+
+*/
+
+app.get("/register",(req,res)=>{
+    res.render('register')
+})
+
+app.post("/empRegister",function(req,res){
+    console.log(req.body);
+    const {
+    username,
+    password,
+    location,
+    startDate,
+    gender,
+    vendor,
+    role,
+    rolelevel,
+    Prole,
+    cloud,
+    mainframe,
+    angular,
+    java,
+    NET,
+    IBM,
+    projectId,
+    projectStartDate,
+    projectEndDate,
+    transferrable,
+    }=req.body
+   let arr =[]
+   if(mainframe != undefined){
+    arr.push(mainframe);
+    }
+    if(java != undefined){
+        arr.push(java);
+    }
+    if( angular != undefined){
+        arr.push(angular);
+    }
+    if(IBM != undefined){
+        arr.push(IBM);
+    }
+    if(NET != undefined){
+        arr.push(NET);
+    }
+    if(cloud != undefined){
+        arr.push(cloud);
+    }
+
+    console.log(arr);
+       User.register(
+        {
+            username : username,
+            role: role,
+            roleLevel:rolelevel,
+            projectRole:Prole,
+            vendor: vendor,
+            startDate:startDate,
+            gender:gender,
+            skills: arr,
+            score:0,
+            location:location,
+            project: {
+                projectId:projectId,
+                projectStartDate: projectStartDate,
+                projectEndDate:projectEndDate,
+            },
+            transferrable:transferrable,
+            
+
+        },
+        password,
+        function (err, user) {
+            if (err) {
+                console.log(err);
+                res.redirect('/empRegister');
+            } else {
+                passport.authenticate('local')(req, res, function () {
+                    if(req.user.role.toUpperCase() == "PM"){                 
+                    res.redirect('/pmLanding'); }
+                    else{
+                        res.redirect('/empLanding');
+                    }
+                   
+                });
+            }
+        }
+        )
+})
+ 
 });
+
+app.get("/pmLanding",(req,res)=>{
+    res.render('pmLanding')
+})
+
+app.get("/empLanding",(req,res)=>{
+    res.render('empLanding')
+})
+
+
+
+
+
+
+
 
 //-------------------------------------------------------------------
 //                          PORT
 //-------------------------------------------------------------------
+
 app.listen(3000 , ()=>{
     console.log("server running at port 3000");
 });
