@@ -298,6 +298,7 @@ app.post("/createProject", async (req, res) => {
         if(founduser){
             //console.log(founduser);
             let obj = {
+                isCompleted:false,
                 projectId: id,
                 projectStartDate: startDate,
                 projectEndDate: endDate
@@ -475,8 +476,11 @@ app.post("/createProject", async (req, res) => {
 
                     // console.log(allotArr);
                     // console.log(mainArr);
-                    
-                    res.render("ProjectEmp", {allotArr, team, arr, id})
+                    if(allotArr.length == 0){
+                        res.render("noResources");
+                    }else{
+                        res.render("ProjectEmp", {allotArr, team, arr, id});
+                    }
                 }
             );
 
@@ -560,9 +564,9 @@ app.get("/register", (req, res) => {
                 location: location,
                 project: {
                     isCompleted:false,
-                    projectId: projectId,
-                    projectStartDate: projectStartDate,
-                    projectEndDate: projectEndDate
+                    projectId: "",
+                    projectStartDate: "",
+                    projectEndDate: ""
                 },
                 transferrable: transferrable
 
@@ -778,6 +782,7 @@ app.post("/empLogin",(req,res)=>{
                     if(err){
                         console.log(err);
                     }else{
+                        console.log(foundProject);
                         foundProject[0].isCompleted = true;
                         foundProject[0].save();
                     }
