@@ -1,0 +1,50 @@
+<%- include('partials/header') -%>
+
+    <div>
+        <%- include('partials/pmNav') -%>
+    </div>
+    <div class="container">
+        <!-- <div class="navbar">
+            <input type="text" id="find">
+            <button  name="empSearch" type="submit" id="empSearch">Search For Emp</button>
+            <button  name="projSearch" type="submit" id="projSearch">Search For Proj</button>
+        </div>
+                <h1 id="activeProjects">Active Projects</h1>
+                <h1 id="Employees">Employees</h1>
+        <div class="projResults" id="Results"></div>
+        <div class="projResults" id="empResults"></div>
+        <div class="projResults" id="projResults"></div>
+        <script src="js/dashboard.js"></script> -->
+
+        <div class="pm-btn-group">
+            <button class="pm-button"><a href="/createProject">Create New Project</a></button>
+            <button class="pm-button"><a href="/search">Search</a></button>
+        </div>
+        <h3>Your Projects</h3>
+            <% projects.forEach((project,i) => { %>
+                <div>
+                    
+                    <table class="table table-bordered table-hover table-responsive table-striped">
+                        <tr>
+                            <th>Project Number</th>
+                            <th>Mark</th>
+                        </tr>
+                    <form action="/completeProject" method="post">
+                        <tr>
+                            <td><a style="text-decoration: none;" href="/projects/<%=project.projectId%>">Project <%=i%></a> </td>
+                            <input type="text" name="projectId" value="<%=project.projectId%>" style="display: none;">
+                            <td><button  class="btn text-light btn-primary" type="submit">Mark Project Complete</button></td>
+                        </tr>
+                       
+
+                        
+                    </form>
+                    
+                 </table>
+                </div>
+            <%})%>
+
+        
+
+</div>
+    <%- include('partials/footer') -%>

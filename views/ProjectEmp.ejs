@@ -1,0 +1,54 @@
+<%- include('partials/header') -%>
+
+    <div>
+        <%- include('partials/empNav') -%>
+    </div>
+    <% team.forEach(element => { %>
+        <div class="container">
+        <div>
+            <h1><%=element%></h1>
+            <table class="table table-bordered table-hover table-responsive table-striped">
+                <tr> 
+                    <th>Username of Employee</th>
+                    <th>Score</th>
+                    <th>Role Level</th>
+                </tr>
+           
+                <%allotArr.forEach(user => {%>
+                    <%if(user.role.toUpperCase() == element.toUpperCase()){%>
+                        
+                           <tr>
+                               <td> <%=user.username%></td>
+                               <td><%= user.score %></td>
+                               <td> <%=user.roleLevel%> </td>   
+                        </tr>
+                      
+                    <%}%>
+                <% });%>
+            </table>
+        </div>
+    <% }); %>
+    <br>
+    <br>
+
+        <h2>Select Security Maven for your Team</h2>
+        <% allotArr.forEach(elem => { %>
+            <form action="/role" method="POST">
+            <table class="table table-bordered table-hover table-responsive table-striped">
+                <tr> 
+                    <th>Username of Employee</th>
+                    
+                </tr>
+            <td><p><%=elem.username%></p></td>
+            <input style="display:none;" ="<%=elem._id%>" name="id">
+            <td>
+            <button type="submit">Select</button>
+        </td>
+             </table>
+            </form>
+        <% }) %>
+     
+    </div>
+
+<%- include('partials/footer') -%>
+

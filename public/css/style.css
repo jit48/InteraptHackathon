@@ -1,3 +1,543 @@
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    /* overflow-x: hidden;
+    overflow-y: hidden; */
+}
+.inner{
+    height: 75%;
+    width: 70%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 10px;
+    box-shadow: 10px 10px 68px -6px rgba(0,0,0,0.5);
+    display: flex;
+    justify-content: space-between;
+}
+.photo{
+    width: 50%;
+    height: 100%;
+    padding: 60px 60px;
+}
+.photo img{
+    width: 100%;
+    height: 100%;
+}
+.user-form{
+    background: #8533AC;
+    padding: 50px;
+    width: 50%;
+    height: 100%;
+    border-radius: 0px 10px 10px 0px;
+}
+.user-form h1{
+    color: #fff;
+    padding: 30px 0;
+    font-weight: 700;
+    text-align: center;
+    padding-top: 6rem;
+}
+.user-form a{
+    text-decoration: none;
+    display: block;
+    color: white;
+    text-align: center;
+    margin-bottom: 1rem;
+    font-size: 1.3rem;
+}
+.user-form a :hover{
+    color:#fff;
+}
+@media(max-width: 665px){
+    .photo{
+        display: none;
+    }
+    .user-form{
+        width: 100%;
+        border-radius: 10px;
+    }
+}
+.index-navbar-logo{
+    top: 30px;
+    left: 44px;
+    width: 74px;
+    height: 43px;
+    text-align: left;
+    font: normal normal 900 30px/25px Poppins;
+    letter-spacing: 3.6px;
+    color: #878181;
+    opacity: 1;
+}
+.displayNone{
+  display: none;
+}
+ /* -------------------------------------------------------------------------------------
+                             Employee Landing
+------------------------------------------------------------------------------------- */
+.emplogout{
+   margin-top: 350px;
+   text-align: center;
+}
+  .empLandingContainer{
+    margin-left: 150px; 
+    margin-right: 150px;
+    font-size: 28px; 
+    background-color:#f4f5f7 ;
+  }
+  .empElements{
+      margin-left: 70px;
+      padding-top: 60px;
+  }
+  .empDetails h1{
+    font-size: 25px;;
+  }
+  .empDetails p{
+      display: flex;
+      font-size: 20px;
+      color: #5b57ee;
+  }
+  .empBio{
+      margin-top: 50px;
+      font-size: 20px;
+      margin-bottom: 50px;
+  }
+  .empTechSkill{
+      display: flex;
+      justify-content:left;
+      align-items: center;
+  }
+  .empTechSkill p{
+    margin-right: 5px;
+  }
+  .emp-btn-group .emp-button {
+    background-color: #f4f5f7;
+    border:none;
+    color: rgb(0, 0, 0);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    font-size: 15px;
+    width:250px;
+  }
+   
+  .emp-btn-group .emp-button:hover {
+    background-color: #5b57ee;
+    color:white;
+  }
+  @media screen and (max-height: 450px) {
+    .empSidenav {padding-top: 15px;}
+    .empSidenav a {font-size: 18px;}
+    .empSidenav h3, h4 {font-size: 20px;}
+  }
+
+  @media screen and (max-width: 750px) {
+    .empSidenav {padding-top: 15px;}
+    .empSidenav a {font-size: 18px;}
+    .empSidenav h3, h4 {font-size: 18px;}
+    .empLandingContainer{
+        margin-left: 50px;
+    }
+  }
+/* -------------------------------------------------------------------------------------
+                            EMPLOYEE PM LOGIN
+------------------------------------------------------------------------------------- */
+* {
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  .overflowHidden {
+    overflow-x: hidden;
+    overflow-y: hidden;
+  }
+  
+  .login-form {
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    /* background-color: grey; */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    width: 96vw;
+    height: 94vh;
+  }
+  .login-card {
+    display: flex;
+    width: 60%;
+    height: 70%;
+  }
+  .login-img {
+    background-color: rgb(226, 224, 224);
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom-left-radius: 30px;
+    overflow: hidden;
+  }
+  .login-img svg {
+    width: 100%;
+  }
+  .login-credentials {
+    width: 60%;
+    background-color: #6c63ff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-around;
+    border-top-right-radius: 30px;
+  }
+  .login-credentials p {
+    color: white;
+    margin-left: auto;
+    padding-right: 40px;
+  }
+  .login-credentials a {
+    color: white;
+  }
+  .login-credentials label {
+    font-weight: bold;
+    color: white;
+    font-size: 20px;
+  }
+  .login-credentials button {
+    color: white;
+    width: 40%;
+    font-weight: bold;
+    height: 40px;
+    border: 2px solid white;
+    background-color: transparent;
+    border-radius: 15px;
+  }
+  .login-username {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 80%;
+  }
+  
+  .login-username input {
+    color: white;
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-bottom: 2px solid white;
+    background-color: transparent;
+  }
+  .login-username input::placeholder {
+    color: rgb(228, 228, 228);
+  }
+  .login-username input:focus,
+  textarea:focus,
+  select:focus {
+    border: none;
+    border-bottom: 2px solid white;
+    outline: none;
+    fill: none;
+  }
+  .login-password {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    width: 80%;
+  }
+  .login-password input {
+    color: white;
+    width: 100%;
+    height: 50px;
+    border: none;
+    border-bottom: 2px solid white;
+    background-color: transparent;
+  }
+  .login-password input::placeholder {
+    color: rgb(228, 228, 228);
+  }
+  .login-password input:focus {
+    border: none;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.836);
+    outline: none;
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .login-img {
+      display: none;
+    }
+    .login-credentials {
+      width: 100%;
+      height: 80%;
+      background-color: #6c63ff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-around;
+      border-top-right-radius: 0;
+      border-radius: 15px;
+    }
+    .login-card {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 90%;
+      height: 80%;
+    }
+  }
+  
+  button {
+    transition: all 0.5s ease 0s;
+  }
+  
+  .login-button:hover {
+    background-color: rgb(228, 228, 228);
+    color: rgb(116, 116, 116);
+  }
+  
+   /* -------------------------------------------------------------------------------------
+                    NAVBAR        
+------------------------------------------------------------------------------------- */
+  
+.nav-link{
+    font-size: 20px;
+}
+.navbar-brand{
+    font-size: 30px;
+}
+
+/* -------------------------------------------------------------------------------------
+                            PM LANDING
+------------------------------------------------------------------------------------- */
+
+.pm-btn-group{
+    margin-top: 50px;
+    display: flex;
+  justify-content: center;
+  align-items:center;
+}
+.pm-btn-group .pm-button {
+    background-color: #5b57ee;
+    border:none;
+    color: rgb(255, 255, 255);
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    font-size: 15px;
+    width:250px;
+    border-radius: 5px;
+    margin:10px;
+  }
+  .pm-button a{
+      color: white;
+      text-decoration: none;
+      
+  }
+   
+  .pm-btn-group .pm-button:hover {
+    background-color: #cacaca;
+    color:rgb(76, 76, 76);
+    border-radius: 5px;
+    margin:10px;
+  }
+ /* -------------------------------------------------------------------------------------
+                            
+------------------------------------------------------------------------------------- */
+
+body{
+    background-color: #f4f5f7;
+    font-family: 'Raleway', sans-serif;
+}
+.addMargin{
+    margin: 10px 20px
+}
+.makeFlex{
+    display: flex;
+}
+.addPadding-right{
+    padding-left: 10px;
+}
+/* .navbar{
+    width:100vw;
+    padding-right:60px;
+.stable{
+    width:100%;
+    height: 10vh;
+    padding: 20px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #ffff;
+} */
+.extendWidth{
+    width: 30vw;
+    transition: width 0.5s ;
+}
+.navbar button{
+    width: 160px;
+    height: 40px;
+    margin: 20px;
+    border: none;
+    display: flex;
+    border-radius: 5px ;
+    /* padding-right: 40px; */
+    justify-content: center;
+    align-items: center;
+    background-color: #5b57ee;
+    color: #f4f5f7;
+}
+
+.navbar input{
+    border: 2px solid rgb(192, 190, 190);
+    border-radius: 5px;
+    height: 40px;
+    margin-right: 40px;
+
+}
+.teams-div{
+    display: flex;
+    flex-direction: column;
+}
+.displayNone{
+    display: none !important;
+}
+.score-div{
+    width: 80vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.projResults{
+    width: 80vw;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.projectCard{
+    background-color: #ffff;
+    margin: 15px;
+    width: 250px;
+    height: 300px;
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 5px;
+    justify-content: space-evenly;
+    /* box-shadow: 10px -7px 12px 5px rgba(0,0,0,0.5); */
+}
+.projectDetails{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.button{
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #5b57ee;
+    width: 160px;
+    height: 40px;
+    border: none;
+    color: #ffff;
+}
+
+.button a{
+    text-decoration: none;
+    color: white;
+}
+.projectHeader{
+    padding: 30px 10px ;
+    border-radius: 5px;
+    background-color: #ffff;
+}
+.projectHeader-header{
+    margin: 20px 0 ;
+    padding: 40px 10px ;
+    border-radius: 5px;
+    background-color: #ffff;
+}
+.projectHeader p{
+ text-align: justify;
+}
+.projectOtherDetails{
+    display: flex;
+}
+
+.empSpecificProjDetails{
+    margin: 0px 40px;
+}
+.projEmployees{
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.userDetails{
+    padding: 20px;
+    background-color: #ffff;
+    border-radius: 5px;
+}
+.userDetails-skills{
+    display: flex;
+}
+.userDetails-skills p{
+    margin: 10px 20px;
+}
+
+.userDetails-details h1{
+    font-size: 3rem;
+    margin: 0 20px;
+}
+
+.userDetails-details p {
+    margin: 10px 20px;
+
+}
+.userDetails-role{
+    display: flex;
+}
+.userDetails-role p {
+    margin: 10px 20px;
+}
+
+/* .Create-Form{
+    margin-left: 250px;
+}
+
+.Create-Form h1 {
+    padding-top: 15px;
+} */
+.button{
+    
+        width: 160px;
+        height: 40px;
+        margin: 20px;
+        border: none;
+        display: flex;
+        border-radius: 5px ;
+        /* padding-right: 40px; */
+        justify-content: center;
+        align-items: center;
+        background-color: #5b57ee;
+        color: #f4f5f7;
+    }
+    
+=======
 body{
     height: 80vh;
     width: 100vw;

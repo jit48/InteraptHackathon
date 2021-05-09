@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/style.css">
+    <title>Document</title>
+</head>
+<body>
+    <div>
+        <% foundUser.forEach(user => { %>
+            <div class="userDetails">
+                <div class="userDetails-details">
+                    <h1><%= user.username %></h1>
+                    <p><B>Date of Joining:</B> <%=user.startDate%></p>
+                    <p><B>Current Location:</B> <%= user.location %></p>
+                </div>
+                <div class="userDetails-role">
+                    <p><b>Role:</b> <%= user.role %></p>
+                    <p><b>Seniority:</b> <%= user.roleLevel %></p>
+                </div>
+                <div class="userDetails-skills">
+                    <p><b>Skills:</b></p>
+                    <% user.skills.forEach(skill => { %>
+                        <p><%= skill %></p>
+                    <% }) %>
+                </div>
+                <div>
+                    <% if(user.projectRole != undefined){ %>
+                        <p class="addMargin"><b><%=user.projectRole %></b></p>
+                    <% } %> 
+                </div> 
+                <div>
+                    <% if(user.transferrable == true){ %>
+                        <p class="addMargin"><b>Available for Transferrable projects</b></p>
+                    <% } %> 
+                </div> 
+                <div class="button addMargin" >
+                    <a  href="/projects/<%=user.project[0].projectId%>">Current Project</a>
+                </div>
+            </div>
+        <% }) %> 
+    </div>
+</body>
+</html>
