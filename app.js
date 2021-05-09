@@ -15,6 +15,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(express.static("public"));
 
 
+
 app.use(session({secret: 'secret', resave: false, saveUninitialized: false}));
 
 app.use(passport.initialize());
@@ -29,6 +30,7 @@ mongoose.connect(`mongodb+srv://${
     useUnifiedTopology: true,
     useNewUrlParser: true
 });
+
 
 const projectSchema = new mongoose.Schema({
     projectId: String,
@@ -599,7 +601,6 @@ app.get("/pmLogin",(req,res)=>{
     res.render('pmLogin')
 })
 
-
 app.post("/login",(req,res)=>{
     const user = new User({
         username: req.body.username,
@@ -831,4 +832,4 @@ app.post("/empLogin",(req,res)=>{
         });
 
 
-// "https://xd.adobe.com/view/26bb4dd1-2368-4f71-bf5f-4d7927e93c17-73e8/screen/dbab38c8-e61c-4720-92e2-c5536bfb53af/specs/"
+
