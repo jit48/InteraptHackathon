@@ -253,7 +253,7 @@ function outputHtml(matches){
                     <p>${match.role}</p>
                 </div>
                 <div class="button">
-                    <a href="/projects/${match.projectId}">explore</a>
+                    <a href="/employees/${match._id}">explore</a>
                 </div>
             </div>`
         )).join('');
@@ -319,7 +319,7 @@ async function empData(){
             <p>${d.role}</p>
         </div>
         <div class="button">
-            <a href="/projects/${d.projectId}">explore</a>
+            <a href="/employees/${d._id}">explore</a>
         </div>
     </div>`
 )).join('');
