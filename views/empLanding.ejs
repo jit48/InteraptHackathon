@@ -33,10 +33,16 @@
                 </div>
                 
             </div>
-            <div class="emp-btn-group">
-                <button class="emp-button" id="showProjDetails">Current Project Details</button>
-                <button class="emp-button" id="showProjDetails">Completed Projects Details</button>
+        </div>
+        <div class="emp-btn-group">
+            <button class="btn btn-info" id="showProjDetails">All Projects</button>
+            <div id="empProjDetails">
+                <% project.forEach(project => { %>
+                    <a class="btn btn-info mt-4"href="projects/<%=project.projectId%>">Explore</a>
+                <%})%>
             </div>
+
+
         </div>
     </div> 
 <script src="js/empLanding.js">

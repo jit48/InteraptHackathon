@@ -1,9 +1,7 @@
-
 <%- include('partials/header') -%>
 
     <div>
         <%- include('partials/pmNav') -%>
-
     </div>
     <div class="container">
         <!-- <div class="navbar">
@@ -22,20 +20,31 @@
             <button class="pm-button"><a href="/createProject">Create New Project</a></button>
             <button class="pm-button"><a href="/search">Search</a></button>
         </div>
-        <h1>
+        <h3>Your Projects</h3>
             <% projects.forEach((project,i) => { %>
                 <div>
+                    
+                    <table class="table table-bordered table-hover table-responsive table-striped">
+                        <tr>
+                            <th>Project Number</th>
+                            <th>Mark</th>
+                        </tr>
                     <form action="/completeProject" method="post">
-                        <input type="text" name="projectId" value="<%=project.projectId%>" style="display: none;">
-                        <button type="submit">Mark Project Complete</button>
+                        <tr>
+                            <td><a style="text-decoration: none;" href="/projects/<%=project.projectId%>">Project <%=i%></a> </td>
+                            <input type="text" name="projectId" value="<%=project.projectId%>" style="display: none;">
+                            <td><button  class="btn text-light btn-primary" type="submit">Mark Project Complete</button></td>
+                        </tr>
+                       
+
+                        
                     </form>
-                    <button><a href="/projects/<%=project.projectId%>">Project <%=i%></a></button>
+                    
+                 </table>
                 </div>
             <%})%>
 
-        </h1>
-        <div>
-            completed project
-        </div>
+        
+
 </div>
     <%- include('partials/footer') -%>
